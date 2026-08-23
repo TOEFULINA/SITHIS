@@ -133,7 +133,8 @@ export function renderItemsView(container) {
       item.model,
       item.viewerFitMargin,
       item.viewerStartOpposite,
-      item.viewerStartAngle
+      item.viewerStartAngle,
+      item.viewerAnimationRange
     );
     infoName.textContent = item.name;
     statList.innerHTML = item.stats

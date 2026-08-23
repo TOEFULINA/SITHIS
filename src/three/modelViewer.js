@@ -47,7 +47,13 @@ dracoLoader.setDecoderPath("/draco/");
 // picked your angles and don't need it anymore.
 const SHOW_ANGLE_READOUT = true;
 
-export function mountModelViewer(container, modelPath, fitMargin, startOpposite, startAngle) {
+// `animationRange` (optional) — { startFrame, endFrame, fps } — plays only
+// this slice of the model's baked animation instead of the whole clip.
+// Figure out `fps` from the source: check the spacing between consecutive
+// keyframe times in the .glb (a uniform delta of 1/24s = 24fps, 1/30s =
+// 30fps, etc) — don't guess, since trimming with the wrong fps plays the
+// wrong slice.
+export function mountModelViewer(container, modelPath, fitMargin, startOpposite, startAngle, animationRange) {
   const width = container.clientWidth || 400;
   const height = container.clientHeight || 340;
 
@@ -232,7 +238,18 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
 
         if (gltf.animations && gltf.animations.length) {
           mixer = new THREE.AnimationMixer(subject);
-          gltf.animations.forEach((clip) => mixer.clipAction(clip).play());
+          gltf.animations.forEach((clip) => {
+            const playClip = animationRange
+              ? THREE.AnimationUtils.subclip(
+                  clip,
+                  `${clip.name}-trim`,
+                  animationRange.startFrame,
+                  animationRange.endFrame,
+                  animationRange.fps ?? 30
+                )
+              : clip;
+            mixer.clipAction(playClip).play();
+          });
         }
       },
       undefined,

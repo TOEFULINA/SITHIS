@@ -25,6 +25,10 @@
 //            temporary on-screen θ/φ readout in the viewer (top-left
 //            corner) for finding these — drag to the angle you like and
 //            read the numbers off straight.
+// viewerAnimationRange: optional — { startFrame, endFrame, fps } — plays
+//            only this slice of a model's baked animation. Check the
+//            .glb's own keyframe spacing for the real fps before setting
+//            this (see src/three/modelViewer.js) — don't assume 24 or 30.
 //
 // Every entry below is a real title from your catalog with no model,
 // stats, or description yet — swap in the real details piece by piece
@@ -106,6 +110,10 @@ export const items = [
   {
     ...placeholder("item-20", "Foot Clog Packaging", "Packaging"),
     model: "/models/hulk-packaging.glb",
+    viewerFitMargin: 0.8,
+    // Source animation is baked at 24fps (confirmed from keyframe spacing)
+    // — only play the box-opening portion, not the whole clip.
+    viewerAnimationRange: { startFrame: 75, endFrame: 170, fps: 24 },
   },
   placeholder("item-21", "KC Foot", "Packaging"),
   { ...placeholder("item-22", "Clay Shoe", "Packaging"), model: "/models/clay-shoe.glb" },
