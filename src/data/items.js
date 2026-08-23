@@ -109,6 +109,13 @@ export const items = [
     viewerFitMargin: 0.7,
     viewerStartAngle: { thetaDeg: 250.8, phiDeg: 79.4 },
   },
+  {
+    ...placeholder("item-42", "Brazil Runner", "Footwear"),
+    model: "/models/brazil-runner.glb",
+    viewerFitMargin: 0.7,
+    viewerStartAngle: { thetaDeg: 210, phiDeg: 72 },
+    stats: [{ label: "Year", value: "2026" }],
+  },
 
   // Packaging
   {
