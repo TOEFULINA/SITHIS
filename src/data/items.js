@@ -150,4 +150,8 @@ export const items = [
     ...placeholder("item-38", "Katamari", "Nail Sets"),
     model: "/models/katamari-nails.glb",
   },
+  {
+    ...placeholder("item-39", "Tentacle", "Nail Sets"),
+    model: "/models/tentacle-nails.glb",
+  },
 ];
