@@ -1,0 +1,770 @@
+@font-face {
+  font-family: "Futura Condensed";
+  src: url("/fonts/Futura Condensed Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Futura Condensed";
+  src: url("/fonts/Futura Condensed Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Futura Condensed";
+  src: url("/fonts/Futura Condensed Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --ink: #eee7d6;
+  --ink-dim: #b9b096;
+  --line: rgba(238, 231, 214, 0.55);
+  --panel: rgba(8, 8, 6, 0.6);
+  /* neutral gray, sampled from the actual UI art (the l-/r-slim/wide
+     panel assets) rather than invented — those assets are pure
+     grayscale, no gold/amber anywhere in them */
+  --panel-border: rgba(160, 160, 160, 0.4);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Buttons don't inherit the page font by default in browsers — without
+   this, anything rendered as a <button> (like the item-list rows) quietly
+   falls back to the system UI font instead of Futura Condensed. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  color: var(--ink);
+  font-family: "Futura Condensed", "Bahnschrift", "Arial Narrow", sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  /* themed cursor: the site's own mark instead of the OS arrow (with a
+     soft glow baked into the png so the dark artwork still reads against
+     this dark theme), brightening slightly on anything clickable. Falls
+     back to the normal system cursors if the image ever fails to load.
+     Hotspot is the mark's own tip, at the image's top-left corner. */
+  cursor: url("/cursors/logo-default.png") 0 0, auto;
+}
+
+a,
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+label[for] {
+  cursor: url("/cursors/logo-pointer.png") 0 0, pointer;
+}
+
+#app {
+  position: relative;
+  min-height: 100vh;
+  z-index: 2;
+}
+
+/* ---------- persistent blurred background ---------- */
+
+#bg-layer {
+  position: fixed;
+  inset: -3vh -3vw;
+  background-image: var(--bg-image, none);
+  background-size: cover;
+  background-position: center;
+  filter: blur(14px) brightness(0.55) saturate(0.9);
+  transform: scale(1.06);
+  z-index: 0;
+  /* soft fallback so the page never looks broken before an image is set */
+  background-color: #14120f;
+  background-image:
+    radial-gradient(ellipse at 30% 20%, rgba(80, 70, 50, 0.35), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(30, 40, 35, 0.4), transparent 60%),
+    var(--bg-image, none);
+}
+
+#bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.65) 100%);
+}
+
+/* ---------- shared type ---------- */
+
+.rune {
+  font-family: "Futura Condensed", "Bahnschrift", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ---------- compass home ---------- */
+
+.compass-screen {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compass {
+  position: relative;
+  width: min(46vw, 720px);
+  /* matches the compass-rose.png artwork's own proportions so the star
+     tips land exactly at this box's edges */
+  aspect-ratio: 3863 / 1791;
+  /* how far each label sits clear of the star tip — see .compass-point
+     below. A custom property (inherited by the buttons) rather than a
+     percentage of this box, so it can't drift if the box's own sizing
+     ever changes. */
+  --gap: clamp(2.25rem, 5vw, 4.5rem);
+}
+
+.compass-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.92;
+  /* compass-rose.png is pure grayscale art — no sepia/saturate warming,
+     just a soft glow, so it renders the way the source image actually
+     looks instead of an invented warmer tint */
+  filter: drop-shadow(0 0 14px rgba(238, 231, 214, 0.3));
+  pointer-events: none;
+  user-select: none;
+}
+
+.compass-point {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4em;
+  background: none;
+  border: none;
+  color: var(--ink-dim);
+  font-weight: 300;
+  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+  padding: 0.75em;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+.compass-point:hover,
+.compass-point:focus-visible {
+  color: var(--ink);
+  text-shadow: 0 0 16px rgba(238, 231, 214, 0.75);
+  outline: none;
+}
+
+/* Rewritten from a percentage-based top/bottom/left/right offset (which
+   depends on the .compass box's own size — itself set via aspect-ratio —
+   and reportedly wasn't rendering consistently for every viewer) to a
+   translate-based anchor instead: each label is pinned at the exact edge
+   of the box (top:0 / bottom:0 / left:0 / right:0 — the same edge the
+   star tips touch, per compass-rose.png's own proportions) and then
+   pushed clear of that edge with `transform: translate(...)`. The first
+   100% moves the label fully past its own edge (so it can never sit on
+   top of the tip no matter how the box is sized), and the clamp() on top
+   of that is the actual visible gap — sizeable and screen-size-aware, but
+   a fixed value rather than a percentage of the compass box. */
+.compass-point.top {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, calc(-100% - var(--gap)));
+}
+.compass-point.bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, calc(100% + var(--gap)));
+}
+.compass-point.left {
+  left: 0;
+  top: 50%;
+  transform: translate(calc(-100% - var(--gap)), -50%);
+  flex-direction: column;
+}
+.compass-point.right {
+  right: 0;
+  top: 50%;
+  transform: translate(calc(100% + var(--gap)), -50%);
+}
+
+.hint {
+  position: absolute;
+  bottom: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-dim);
+  opacity: 0.6;
+}
+
+/* ---------- section views ---------- */
+
+.section-screen {
+  min-height: 100vh;
+  /* extra bottom padding to clear the nav bar, now fixed at the bottom of
+     the screen instead of the top */
+  padding: 4rem 6vw 6.5rem;
+}
+/* The fade-in lives on this inner wrapper rather than .section-screen
+   itself: a `transform` (even one an animation leaves behind at rest via
+   fill-mode) turns its element into the containing block for any
+   position:fixed descendant. .top-nav is a fixed-position sibling of this
+   wrapper — if the animation sat on .section-screen instead, the nav
+   would anchor to that (possibly page-length) box instead of the actual
+   viewport, and drift off-screen on any page taller than 100vh. */
+.section-content {
+  animation: fade-in 0.4s ease both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* A full-width strip pinned to the bottom edge — "Bottom Bar Thin.png"
+   (a flat translucent panel with a hairline top border) stretched
+   edge-to-edge, the same background-image + 100% 100% pattern used
+   elsewhere, but here deliberately stretched rather than aspect-ratio
+   boxed since the source art is just a plain panel with no detail to
+   distort. The "Divider Ornate" knot pieces are pinned as the bar's own
+   ::before/::after at the far left/right screen edges — the diamond caps
+   from the reference screenshots — so no extra markup is needed for
+   them. Nav content is left-anchored (tabs), leaving the right side of
+   the bar empty/reserved for the stat readout that isn't designed yet.
+   The art's own hairline top border gets scaled down to nothing at this
+   bar height, so it's redrawn explicitly as a low-opacity border-top —
+   the same faint rule used on every other panel. */
+.top-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: clamp(44px, 6.5vw, 70px);
+  padding: 0 clamp(3rem, 6vw, 4.5rem);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  background-image: url("/ui/nav-bar-full.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-top: 1px solid var(--panel-border);
+}
+.top-nav::before,
+.top-nav::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 82%;
+  aspect-ratio: 236 / 198;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+.top-nav::before {
+  left: 0;
+  background-image: url("/ui/nav-cap-left.png");
+}
+.top-nav::after {
+  right: 0;
+  background-image: url("/ui/nav-cap-right.png");
+}
+
+.top-nav button {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--ink-dim);
+  font-size: clamp(0.65rem, 1.3vw, 0.85rem);
+  letter-spacing: 0.16em;
+  padding: 0.3em 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.top-nav button:hover {
+  color: var(--ink);
+}
+.top-nav button.active {
+  color: var(--ink);
+  border-bottom-color: var(--panel-border);
+}
+.top-nav .home-glyph {
+  color: var(--ink);
+  font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+  opacity: 0.8;
+  border-bottom: none;
+}
+.top-nav .home-glyph:hover {
+  opacity: 1;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin: 0 0 0.3em;
+}
+.section-sub {
+  color: var(--ink-dim);
+  margin: 0 0 2.5rem;
+  max-width: 60ch;
+  font-weight: 300;
+}
+
+/* ---------- panels ---------- */
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(3px);
+}
+
+/* ---------- items: category rail -> item list -> model/stat card ---------- */
+/* Full-screen, like the rest of the game's menus — not a boxed-in panel. */
+
+.items-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+/* The rows list scrolls under a glyph that never moves — like the game's
+   own list: the highlighted row is kept centered on the fixed arrow by
+   translating the row stack itself (see centerActiveRow in itemsView.js),
+   not by moving the arrow to chase the selection. */
+.category-rows-viewport {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+.category-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  transition: transform 0.2s ease;
+}
+
+/* The panel frame (border lines + the connector glyph) is baked directly
+   into these png assets — the "-selected" variant is the same panel with
+   the glyph visible, used while that pane has focus. That replaces what
+   used to be a hand-rolled gradient/border here plus a separate glyph
+   image element floating on top of it. */
+.category-col {
+  position: relative;
+  width: 220px;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 0 1rem;
+  background-image: url("/ui/l-slim.png");
+  background-size: 100% 100%;
+}
+.category-col.focused {
+  background-image: url("/ui/l-slim-selected.png");
+}
+
+.list-col {
+  position: relative;
+  width: 340px;
+  flex-shrink: 0;
+  height: 100%;
+  background-image: url("/ui/l-wide.png");
+  background-size: 100% 100%;
+  transition: opacity 0.25s ease;
+}
+.list-col.focused {
+  background-image: url("/ui/l-wide-selected.png");
+}
+
+/* Only the category rail shows at first; the list + detail panes fade in
+   once you've stepped right into them, and fade back out stepping back
+   left — kept as opacity only (not width) so the layout never reflows. */
+.items-fullscreen:not(.expanded) .list-col,
+.items-fullscreen:not(.expanded) .detail-col {
+  opacity: 0;
+  pointer-events: none;
+}
+.list-rows-viewport {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+.list-col-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0 1rem;
+  transition: transform 0.2s ease;
+}
+
+.col-row {
+  background: none;
+  border: none;
+  text-align: left;
+  color: var(--ink-dim);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 0.5em 0.7em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+.col-row:hover {
+  color: var(--ink);
+}
+.col-row.active {
+  color: var(--ink);
+}
+.category-col .col-row {
+  font-size: 1rem;
+}
+
+.detail-col {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  /* extra bottom padding to clear the nav bar, now fixed at the bottom of
+     the screen instead of the top */
+  padding: 4rem 4vw 6rem;
+  transition: opacity 0.25s ease;
+}
+
+.item-viewer {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 160px;
+  /* Was capped at 55% of the detail column, which — combined with the
+     info card and its own gap eating space below — left the actual
+     render surface small even once the model itself was framed tightly
+     inside it. Raised so the viewer itself claims most of the column. */
+  max-height: 76%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.06), transparent 70%);
+}
+.item-viewer canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.item-viewer .viewer-hint {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  font-size: 0.7rem;
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+}
+
+.info-card {
+  width: min(440px, 92%);
+  flex-shrink: 0;
+  align-self: center;
+  aspect-ratio: 4279 / 1847;
+  background-image: url("/ui/info-card-wide.png");
+  background-size: 100% 100%;
+}
+.info-card-inner {
+  height: 100%;
+  padding: 9% 8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.6rem;
+  overflow: hidden;
+}
+.info-name {
+  font-size: clamp(1.05rem, 1.9vw, 1.35rem);
+  font-weight: 700;
+  text-align: center;
+}
+.info-divider {
+  height: 1px;
+  background: var(--panel-border);
+  opacity: 0.7;
+  margin: 0.25rem 0 0.45rem;
+}
+.info-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  overflow: auto;
+}
+.stat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 2.75rem;
+}
+.stat-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+.stat-list .stat-label {
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+.stat-list li span:last-child {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--ink);
+}
+.item-description {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink-dim);
+  font-weight: 300;
+  text-align: center;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .items-fullscreen {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .category-col {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1.5rem 1rem;
+    /* the panel art is designed for a tall column, not a wide wrapped
+       row, so mobile falls back to a flat panel instead of stretching it */
+    background-image: none;
+    background: var(--panel);
+    border-bottom: 1px solid var(--panel-border);
+  }
+  .list-col {
+    width: 100%;
+    height: 240px;
+    background-image: none;
+    background: var(--panel);
+    border-bottom: 1px solid var(--panel-border);
+  }
+  .list-col-inner {
+    padding: 1rem;
+  }
+  .detail-col {
+    /* extra bottom padding to clear the fixed bottom nav */
+    padding: 2rem 4vw 5.5rem;
+  }
+}
+
+/* ---------- magic: same menu mechanic as items, mirrored to the right ---------- */
+/* Items opens from the compass's right point and grows rightward (rail on
+   the left, using the l-*.png panel art). Magic opens from the left
+   point, so the whole thing is flipped: rail hugs the right edge, the
+   list/detail panes grow toward the left, and it uses the r-*.png panel
+   art instead — a pre-made mirror of the same art, glyph pointing the
+   other way, rather than CSS-flipping the l- assets — everything else
+   (carousel centering, focus/expand behavior) is shared, unchanged, from
+   the items menu. */
+.items-fullscreen.mirrored {
+  flex-direction: row-reverse;
+}
+.items-fullscreen.mirrored .category-col {
+  /* wider than Items' category rail — this rail carries the actual
+     portfolio-type names (e.g. "Graphic Design"), not short category
+     labels, so it needs the room */
+  width: 300px;
+  background-image: url("/ui/r-slim.png");
+}
+.items-fullscreen.mirrored .category-col.focused {
+  background-image: url("/ui/r-slim-selected.png");
+}
+.items-fullscreen.mirrored .list-col {
+  background-image: url("/ui/r-wide.png");
+}
+.items-fullscreen.mirrored .list-col.focused {
+  background-image: url("/ui/r-wide-selected.png");
+}
+.items-fullscreen.mirrored .col-row {
+  text-align: right;
+}
+
+@media (max-width: 860px) {
+  .items-fullscreen.mirrored {
+    flex-direction: column;
+  }
+  .items-fullscreen.mirrored .category-col {
+    width: 100%;
+  }
+  .items-fullscreen.mirrored .col-row {
+    text-align: left;
+  }
+}
+
+/* Real artwork/video in the Magic detail pane, in place of Items' 3D
+   viewer — same .item-viewer box (sizing/position untouched), just filled
+   with an image or video instead of a canvas. */
+.item-viewer .magic-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* "All" — a condensed gallery of every piece in the current list, shown in
+   the detail pane in place of a single item. Selecting a thumbnail opens
+   that piece normally, same as picking it from the list. */
+.detail-col.gallery-mode {
+  justify-content: flex-start;
+}
+.gallery-heading {
+  flex-shrink: 0;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  letter-spacing: 0.04em;
+}
+.gallery-heading .gallery-count {
+  color: var(--ink-dim);
+  font-weight: 400;
+  font-size: 0.8em;
+  margin-left: 0.5em;
+}
+/* Collage layout — a CSS multi-column flow rather than a grid, so each
+   piece keeps its own source image's proportions (a tall sketch, a wide
+   render, a square icon) instead of every tile being cropped to a
+   uniform square. Columns lay out top-to-bottom then wrap, which is what
+   gives it the scattered collage feel rather than a strict row grid. */
+.gallery-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  columns: 160px 4;
+  column-gap: 0.4rem;
+  padding-right: 0.25rem;
+}
+.gallery-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  break-inside: avoid;
+  margin: 0 0 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--panel-border);
+  transition: border-color 0.2s ease, filter 0.2s ease;
+  filter: brightness(0.85);
+}
+.gallery-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.gallery-thumb:hover,
+.gallery-thumb:focus-visible {
+  border-color: var(--ink);
+  filter: brightness(1.05);
+  outline: none;
+}
+.gallery-thumb[data-kind="video"]::after {
+  content: "\25B6";
+  position: absolute;
+  bottom: 0.4em;
+  right: 0.5em;
+  color: var(--ink);
+  font-size: 0.8rem;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 860px) {
+  .gallery-grid {
+    columns: 110px 3;
+    column-gap: 0.3rem;
+  }
+  .gallery-thumb {
+    margin-bottom: 0.3rem;
+  }
+}
+
+/* ---------- skills ---------- */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.skill-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.skill-card h3 {
+  font-family: "Futura Condensed", sans-serif;
+  font-weight: 700;
+  margin: 0;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+.skill-dots {
+  display: flex;
+  gap: 0.35em;
+}
+.skill-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--panel-border);
+}
+.skill-dots span.filled {
+  background: var(--ink);
+}
+.skill-card p {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 0.88rem;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* ---------- placeholder screens (magic / map) ---------- */
+
+.placeholder-panel {
+  max-width: 60ch;
+  padding: 2.5rem;
+  margin: 0 auto;
+  text-align: center;
+}
+.placeholder-panel p {
+  color: var(--ink-dim);
+  font-weight: 300;
+  line-height: 1.7;
+}
