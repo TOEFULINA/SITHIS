@@ -158,6 +158,7 @@ export const items = [
   // Misc
   {
     ...placeholder("item-40", "Memento Deluxe", "Misc"),
+    model: "/models/memento-deluxe.glb",
     stats: [{ label: "Year", value: "2024" }],
   },
 ];
