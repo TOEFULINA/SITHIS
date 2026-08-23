@@ -208,6 +208,51 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
     fitCameraToSphere(true);
   }
 
+  // Some models (the nail-set cases) export a "clear_plastic_material3"
+  // material for their hinged display case — glTF already tags it with
+  // KHR_materials_transmission, which GLTFLoader turns into a passable
+  // MeshPhysicalMaterial automatically, but the exported roughness/IOR/
+  // thickness values read as hazy/milky rather than convincingly glass-like.
+  // This swaps that material for a hand-tuned physical-glass one: full
+  // transmission with real refraction (ior), a thin clearcoat for the
+  // polished-surface highlight, and a faint attenuation tint so thicker
+  // sections (the case walls, seen edge-on) read very slightly darker/
+  // cooler than a face viewed straight-on — the same cue real acrylic
+  // gives. Matched by name prefix so it applies to every nail case without
+  // needing a special-case flag in items.js.
+  function upgradeGlassMaterials(root) {
+    root.traverse((obj) => {
+      if (!obj.isMesh) return;
+      const isGlass = (m) => m && m.name && m.name.startsWith("clear_plastic");
+      const apply = (m) => {
+        const glass = new THREE.MeshPhysicalMaterial({
+          color: 0xffffff,
+          metalness: 0,
+          roughness: 0.06,
+          transmission: 0.65,
+          thickness: 0.2,
+          ior: 1.49, // acrylic/PET — real glass runs closer to 1.5, plastic case a touch lower
+          specularIntensity: 1,
+          specularColor: 0xffffff,
+          clearcoat: 0.8,
+          clearcoatRoughness: 0.05,
+          attenuationColor: 0xdcefff,
+          attenuationDistance: 1.4,
+          envMapIntensity: 2.0,
+          side: THREE.DoubleSide,
+        });
+        glass.name = m.name;
+        m.dispose();
+        return glass;
+      };
+      if (Array.isArray(obj.material)) {
+        obj.material = obj.material.map((m) => (isGlass(m) ? apply(m) : m));
+      } else if (isGlass(obj.material)) {
+        obj.material = apply(obj.material);
+      }
+    });
+  }
+
   function addPlaceholder() {
     const geo = new THREE.IcosahedronGeometry(0.9, 0);
     const mat = new THREE.MeshPhysicalMaterial({
@@ -233,6 +278,7 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
         // which for this asset put its back toward the camera/key light
         // on load — spin it 180° so the lit front is what greets you.
         subject.rotation.y = Math.PI;
+        upgradeGlassMaterials(subject);
         scene.add(subject);
 
         if (gltf.animations && gltf.animations.length) {
