@@ -78,6 +78,13 @@ export const items = [
   placeholder("item-12", "Engraved Headphones", "Accessories"),
   placeholder("item-13", "Deco Cases", "Accessories"),
   placeholder("item-14", "Beef Ring / Spaghetti Rings, etc.", "Accessories"),
+  {
+    ...placeholder("item-43", "Steakpods", "Accessories"),
+    model: "/models/steakpods.glb",
+    viewerFitMargin: 0.8,
+    viewerStartAngle: { thetaDeg: 180, phiDeg: 90 },
+    stats: [{ label: "Year", value: "2025" }],
+  },
 
   // Footwear
   {
