@@ -113,8 +113,10 @@ export const items = [
     viewerFitMargin: 0.85,
     viewerStartAngle: { thetaDeg: 173.9, phiDeg: 89.5 },
     // Source animation is baked at 24fps (confirmed from keyframe spacing)
-    // — only play the box-opening portion, not the whole clip.
-    viewerAnimationRange: { startFrame: 75, endFrame: 170, fps: 24 },
+    // — only play the box-opening portion, not the whole clip. The clip's
+    // true last keyframe is frame 179 (7.458333s @ 24fps) — stopping short
+    // of that cuts the loop off before it settles on its final pose.
+    viewerAnimationRange: { startFrame: 75, endFrame: 179, fps: 24 },
   },
   placeholder("item-21", "KC Foot", "Packaging"),
   { ...placeholder("item-22", "Clay Shoe", "Packaging"), model: "/models/clay-shoe.glb" },
