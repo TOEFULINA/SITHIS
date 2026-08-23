@@ -128,7 +128,13 @@ export function renderItemsView(container) {
       return;
     }
 
-    disposeViewer = mountModelViewer(viewerEl, item.model, item.viewerFitMargin, item.viewerStartOpposite);
+    disposeViewer = mountModelViewer(
+      viewerEl,
+      item.model,
+      item.viewerFitMargin,
+      item.viewerStartOpposite,
+      item.viewerStartAngle
+    );
     infoName.textContent = item.name;
     statList.innerHTML = item.stats
       .map((s) => `<li><span class="stat-label">${s.label}</span><span>${s.value}</span></li>`)

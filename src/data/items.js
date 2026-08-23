@@ -20,6 +20,11 @@
 // viewerStartOpposite: optional — starts the camera on the far side of
 //            the model instead of the shared default corner. Per item,
 //            same as viewerFitMargin above.
+// viewerStartAngle: optional — { thetaDeg, phiDeg }, an exact starting
+//            camera angle, overriding viewerStartOpposite. There's a
+//            temporary on-screen θ/φ readout in the viewer (top-left
+//            corner) for finding these — drag to the angle you like and
+//            read the numbers off straight.
 //
 // Every entry below is a real title from your catalog with no model,
 // stats, or description yet — swap in the real details piece by piece

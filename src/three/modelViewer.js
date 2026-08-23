@@ -31,9 +31,23 @@ dracoLoader.setDecoderPath("/draco/");
 // reasoning as fitMargin: some models just look better greeting you from
 // their other side, without changing that default for every other item.
 //
+// `startAngle` (optional) — { thetaDeg, phiDeg } — sets an exact starting
+// camera angle, overriding startOpposite/the shared default entirely.
+// Read these two numbers straight off the on-screen coordinate readout
+// (see SHOW_ANGLE_READOUT below): drag to the angle you want, screenshot
+// it, and the θ/φ shown is exactly what goes here.
+//
 // Returns a `dispose()` function — call it when the viewer is removed
 // from the DOM (e.g. closing the item modal) to free GPU resources.
-export function mountModelViewer(container, modelPath, fitMargin, startOpposite) {
+
+// TEMP — an on-screen "θ 132.4°  φ 58.1°" readout in the corner of every
+// viewer, live-updating while you drag, so you can find and report an
+// exact starting angle instead of eyeballing "opposite-ish". Flip this
+// back to false (or delete the block below marked TEMP) once you've
+// picked your angles and don't need it anymore.
+const SHOW_ANGLE_READOUT = true;
+
+export function mountModelViewer(container, modelPath, fitMargin, startOpposite, startAngle) {
   const width = container.clientWidth || 400;
   const height = container.clientHeight || 340;
 
@@ -46,7 +60,14 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite)
   // size-in-frame (set by `margin` there) is unaffected by this change.
   const camera = new THREE.PerspectiveCamera(12, width / height, 0.1, 100);
   const baseViewDir = new THREE.Vector3(2.2, 1.6, 2.6).normalize();
-  const defaultViewDir = startOpposite ? baseViewDir.clone().multiplyScalar(-1) : baseViewDir;
+  let defaultViewDir = startOpposite ? baseViewDir.clone().multiplyScalar(-1) : baseViewDir;
+  if (startAngle) {
+    defaultViewDir = new THREE.Vector3().setFromSphericalCoords(
+      1,
+      THREE.MathUtils.degToRad(startAngle.phiDeg),
+      THREE.MathUtils.degToRad(startAngle.thetaDeg)
+    );
+  }
   camera.position.copy(defaultViewDir);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -65,6 +86,42 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite)
   // and look clipped. Rotate-only avoids that entirely while still
   // feeling interactive.
   controls.enableZoom = false;
+
+  // TEMP — see SHOW_ANGLE_READOUT above.
+  let angleReadout = null;
+  if (SHOW_ANGLE_READOUT) {
+    angleReadout = document.createElement("div");
+    angleReadout.style.cssText = [
+      "position:absolute",
+      "top:6px",
+      "left:6px",
+      "padding:3px 7px",
+      "background:rgba(0,0,0,0.65)",
+      "color:#7CFC9A",
+      "font-family:monospace",
+      "font-size:11px",
+      "line-height:1.4",
+      "border-radius:4px",
+      "pointer-events:none",
+      "z-index:5",
+      "white-space:pre",
+    ].join(";");
+    if (getComputedStyle(container).position === "static") {
+      container.style.position = "relative";
+    }
+    container.appendChild(angleReadout);
+    const updateReadout = () => {
+      const spherical = new THREE.Spherical().setFromVector3(camera.position);
+      const thetaDeg = THREE.MathUtils.radToDeg(spherical.theta);
+      const phiDeg = THREE.MathUtils.radToDeg(spherical.phi);
+      // theta wraps to [-180, 180] from Spherical — normalize to [0, 360)
+      // to match what startAngle above expects.
+      const thetaNorm = ((thetaDeg % 360) + 360) % 360;
+      angleReadout.textContent = `θ ${thetaNorm.toFixed(1)}°  φ ${phiDeg.toFixed(1)}°`;
+    };
+    controls.addEventListener("change", updateReadout);
+    updateReadout();
+  }
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
