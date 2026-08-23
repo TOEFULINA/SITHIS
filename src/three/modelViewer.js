@@ -278,6 +278,9 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
     pmrem.dispose();
     envTexture.dispose();
     renderer.dispose();
+    if (angleReadout && angleReadout.parentNode) {
+      angleReadout.parentNode.removeChild(angleReadout);
+    }
     scene.traverse((obj) => {
       if (obj.geometry) obj.geometry.dispose();
       if (obj.material) {

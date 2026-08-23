@@ -73,21 +73,22 @@ export const items = [
     // Compact/rounded mesh — safe to fill the frame much more tightly
     // than the safe-for-anything default without clipping on rotation.
     viewerFitMargin: 0.5,
+    viewerStartAngle: { thetaDeg: 267.5, phiDeg: 84.4 },
   },
   placeholder("item-16", "Black Claymation Shoe", "Footwear"),
   {
     ...placeholder("item-17", "Glo Clog", "Footwear"),
     model: "/models/glogang-clog.glb",
     viewerFitMargin: 0.7,
-    viewerStartOpposite: true,
+    viewerStartAngle: { thetaDeg: 210.0, phiDeg: 72.6 },
   },
   {
     ...placeholder("item-18", "Beef Clog", "Footwear"),
     model: "/models/beef-clog.glb",
     viewerFitMargin: 0.7,
-    viewerStartOpposite: true,
+    viewerStartAngle: { thetaDeg: 12.6, phiDeg: 75.2 },
   },
-  placeholder("item-19", "Sticker Docs", "Footwear"),
+  { ...placeholder("item-19", "Sticker Docs", "Footwear"), model: "/models/sticker-docs.glb" },
 
   // Packaging
   placeholder("item-20", "Hulk", "Packaging"),
