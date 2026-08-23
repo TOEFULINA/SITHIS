@@ -144,7 +144,12 @@ export const items = [
   placeholder("item-32", "Beef", "Nail Sets"),
   placeholder("item-33", "Pork", "Nail Sets"),
   placeholder("item-34", "Halloween Animal Crossing", "Nail Sets"),
-  placeholder("item-35", "Misc Platoon", "Nail Sets"),
+  {
+    ...placeholder("item-35", "Splatoon Collage Nails", "Nail Sets"),
+    model: "/models/splatoon-collage-nails.glb",
+    viewerFitMargin: 0.75,
+    viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
+  },
   placeholder("item-36", "Berserk Beheld", "Nail Sets"),
   {
     ...placeholder("item-38", "Katamari", "Nail Sets"),
