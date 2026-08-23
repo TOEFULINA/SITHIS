@@ -103,7 +103,10 @@ export const items = [
   },
 
   // Packaging
-  placeholder("item-20", "Hulk", "Packaging"),
+  {
+    ...placeholder("item-20", "Foot Clog Packaging", "Packaging"),
+    model: "/models/hulk-packaging.glb",
+  },
   placeholder("item-21", "KC Foot", "Packaging"),
   { ...placeholder("item-22", "Clay Shoe", "Packaging"), model: "/models/clay-shoe.glb" },
   placeholder("item-23", "Spike Sandal", "Packaging"),
