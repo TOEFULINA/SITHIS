@@ -234,7 +234,6 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
         // on load — spin it 180° so the lit front is what greets you.
         subject.rotation.y = Math.PI;
         scene.add(subject);
-        frameSubject(subject);
 
         if (gltf.animations && gltf.animations.length) {
           mixer = new THREE.AnimationMixer(subject);
@@ -250,7 +249,18 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
               : clip;
             mixer.clipAction(playClip).play();
           });
+          // Force the pose forward to whatever the (possibly trimmed) clip
+          // actually starts on *before* framing/centering below. Without
+          // this, frameSubject measures the untouched bind pose (e.g. the
+          // packaging box fully closed), then the animation immediately
+          // jumps to its real starting frame (e.g. already mid-opening) —
+          // the model's visual centroid shifts after that jump, but the
+          // rotation pivot stays locked to the stale bind-pose center, so
+          // it visibly spins off-axis instead of around its own middle.
+          mixer.update(0);
         }
+
+        frameSubject(subject);
       },
       undefined,
       () => {
