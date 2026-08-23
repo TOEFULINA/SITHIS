@@ -154,4 +154,10 @@ export const items = [
     ...placeholder("item-39", "Tentacle", "Nail Sets"),
     model: "/models/tentacle-nails.glb",
   },
+
+  // Misc
+  {
+    ...placeholder("item-40", "Memento Deluxe", "Misc"),
+    stats: [{ label: "Year", value: "2024" }],
+  },
 ];
