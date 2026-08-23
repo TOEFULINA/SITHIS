@@ -146,4 +146,8 @@ export const items = [
   placeholder("item-34", "Halloween Animal Crossing", "Nail Sets"),
   placeholder("item-35", "Misc Platoon", "Nail Sets"),
   placeholder("item-36", "Berserk Beheld", "Nail Sets"),
+  {
+    ...placeholder("item-38", "Katamari", "Nail Sets"),
+    model: "/models/katamari-nails.glb",
+  },
 ];
