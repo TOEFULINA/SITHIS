@@ -69,7 +69,12 @@ export const items = [
 
   // Accessories
   placeholder("item-10", "Croc Belt", "Accessories"),
-  placeholder("item-11", "Pins Bag", "Accessories"),
+  {
+    ...placeholder("item-11", "Pins Bag", "Accessories"),
+    model: "/models/pins-bag.glb",
+    viewerFitMargin: 0.8,
+    viewerStartAngle: { thetaDeg: 180, phiDeg: 60 },
+  },
   placeholder("item-12", "Engraved Headphones", "Accessories"),
   placeholder("item-13", "Deco Cases", "Accessories"),
   placeholder("item-14", "Beef Ring / Spaghetti Rings, etc.", "Accessories"),
