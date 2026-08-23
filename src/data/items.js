@@ -75,7 +75,14 @@ export const items = [
     viewerFitMargin: 0.5,
     viewerStartAngle: { thetaDeg: 267.5, phiDeg: 84.4 },
   },
-  placeholder("item-16", "Black Claymation Shoe", "Footwear"),
+  {
+    ...placeholder("item-16", "Black Claymation Shoe", "Footwear"),
+    model: "/models/black-claymation-shoe.glb",
+    // Same mesh as Red Claymation Shoe (item-15), just a different UV/texture
+    // — safe to reuse its exact framing and starting angle.
+    viewerFitMargin: 0.5,
+    viewerStartAngle: { thetaDeg: 267.5, phiDeg: 84.4 },
+  },
   {
     ...placeholder("item-17", "Glo Clog", "Footwear"),
     model: "/models/glogang-clog.glb",
@@ -88,7 +95,12 @@ export const items = [
     viewerFitMargin: 0.7,
     viewerStartAngle: { thetaDeg: 12.6, phiDeg: 75.2 },
   },
-  { ...placeholder("item-19", "Sticker Docs", "Footwear"), model: "/models/sticker-docs.glb" },
+  {
+    ...placeholder("item-19", "Sticker Docs", "Footwear"),
+    model: "/models/sticker-docs.glb",
+    viewerFitMargin: 0.7,
+    viewerStartAngle: { thetaDeg: 250.8, phiDeg: 79.4 },
+  },
 
   // Packaging
   placeholder("item-20", "Hulk", "Packaging"),
