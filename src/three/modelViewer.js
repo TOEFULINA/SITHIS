@@ -3,16 +3,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
-// A real photographed environment (not a procedural box of flat colored
-// panels) is what actually makes metal/glossy surfaces read as reflective
-// — reflections are literally a picture of the environment, so the more
-// detail/structure the source image has (a real space, defined light
-// openings, a horizon), the more convincing they look. This is bundled
-// with three.js itself (examples/textures/equirectangular) and used in
-// three's own PBR material demos for exactly this reason.
-const HDRI_PATH = "/hdri/pedestrian_overpass_1k.hdr";
+// A real photographed environment — reflections on glossy/metal parts are
+// literally a picture of this, so its own detail/brightness/contrast is
+// what makes them look real rather than a flat, empty-looking gradient.
+// Bright and warm rather than the moody underpass tried earlier — same
+// three.js-bundled asset set (examples/textures/equirectangular), used in
+// their own PBR material showcase demos for exactly this reason.
+const HDRI_PATH = "/hdri/venice_sunset_1k.hdr";
 
 // Generating the PMREM (prefiltered mipmapped env map three actually
 // samples for reflections) from that image costs real time — decoding a
@@ -113,12 +111,9 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
   renderer.setSize(width, height);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  // Was tuned against the old procedural RoomEnvironment, which reads as
-  // an evenly bright studio box. The real HDRI swapped in above is a much
-  // darker, moodier space (bright sky opening, dim underpass around it)
-  // — its average contribution to image-based lighting is lower, so the
-  // same exposure now underlights everything. Bumped up to compensate.
-  renderer.toneMappingExposure = 1.7;
+  renderer.toneMappingExposure = 2.2;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -167,45 +162,49 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
   }
 
   let disposed = false;
-  // Fallback env for only the very first viewer mounted this session,
-  // while the real HDRI is still loading/generating — every mount after
-  // that hits the cache above and skips this entirely (see
-  // getSharedEnvironment). Cheap procedural room so materials aren't flat
-  // black for that first moment, swapped out the instant the real one's
-  // ready.
-  let fallbackPmrem = null;
-  let fallbackEnv = null;
-  if (sharedEnvTexture) {
-    scene.environment = sharedEnvTexture;
-  } else {
-    fallbackPmrem = new THREE.PMREMGenerator(renderer);
-    fallbackEnv = fallbackPmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environment = fallbackEnv;
-    getSharedEnvironment(renderer).then((envTexture) => {
-      if (fallbackPmrem) {
-        fallbackPmrem.dispose();
-        fallbackEnv.dispose();
-        fallbackPmrem = null;
-        fallbackEnv = null;
-      }
-      if (!disposed) scene.environment = envTexture;
-    });
-  }
+  getSharedEnvironment(renderer).then((envTexture) => {
+    // First-ever viewer this session briefly renders without it while the
+    // HDRI streams in (direct lights below still light things reasonably
+    // in the meantime) — every mount after that hits the cache and this
+    // resolves instantly. Guard against setting it after this instance
+    // was already torn down (switched away before the load finished).
+    if (!disposed) scene.environment = envTexture;
+  });
 
-  // Bumped up from the pre-HDRI values (0.15 / 0.75 / 0.35) — the real
-  // environment above is a moody, high-contrast underpass rather than an
-  // evenly-bright synthetic room, so its own diffuse/ambient contribution
-  // dropped once it replaced RoomEnvironment. These three key lights do
-  // the job the old flat room used to (an even, bright product-shot base
-  // read), while the environment now handles reflections/specular detail
-  // on its own.
-  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-  const key = new THREE.DirectionalLight(0xfff3e0, 2.1);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+  const key = new THREE.DirectionalLight(0xfff3e0, 2.5);
   key.position.set(3, 5, 4);
+  // Casts the actual contact shadow below (see shadowCatcher) — a real
+  // cast shadow does more for "does this look real" than the environment
+  // map alone; it's what grounds the model instead of it looking like it
+  // floats. Every model gets normalized to the same ~2.4-unit box (see
+  // frameSubject/targetSize below), so a fixed frustum this size covers
+  // all of them without per-item tuning.
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.camera.near = 0.1;
+  key.shadow.camera.far = 20;
+  key.shadow.camera.left = -2.5;
+  key.shadow.camera.right = 2.5;
+  key.shadow.camera.top = 2.5;
+  key.shadow.camera.bottom = -2.5;
+  key.shadow.bias = -0.0015;
+  key.shadow.normalBias = 0.02;
   scene.add(key);
+  scene.add(key.target);
   const rim = new THREE.DirectionalLight(0x9fb8ff, 0.85);
   rim.position.set(-4, 2, -3);
   scene.add(rim);
+
+  // Only shows where something's actually in shadow (ShadowMaterial is
+  // fully transparent everywhere else) — gives the model a soft contact
+  // shadow to sit on, without a fully modeled floor that would otherwise
+  // show through/clash with the page's own blurred background behind the
+  // transparent canvas.
+  const shadowCatcher = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ opacity: 0.35 }));
+  shadowCatcher.rotation.x = -Math.PI / 2;
+  shadowCatcher.receiveShadow = true;
+  scene.add(shadowCatcher);
 
   let subject = null;
   let boundingSphere = null;
@@ -270,6 +269,12 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
     finalBox.getBoundingSphere(sphere);
     boundingSphere = sphere;
 
+    // Sit the shadow catcher right at the model's own base (a hair below,
+    // so the shadow doesn't z-fight with the model's bottom faces) —
+    // recomputed per model since they're not all the same height within
+    // their normalized bounding box.
+    shadowCatcher.position.y = finalBox.min.y - 0.002;
+
     controls.target.set(0, 0, 0);
     fitCameraToSphere(true);
   }
@@ -284,6 +289,7 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
       clearcoatRoughness: 0.25,
     });
     subject = new THREE.Mesh(geo, mat);
+    subject.castShadow = true;
     scene.add(subject);
     frameSubject(subject);
   }
@@ -308,6 +314,8 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
         const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
         subject.traverse((node) => {
           if (!node.isMesh || !node.material) return;
+          node.castShadow = true;
+          node.receiveShadow = true;
           const mats = Array.isArray(node.material) ? node.material : [node.material];
           mats.forEach((mat) => {
             ["map", "normalMap", "roughnessMap", "metalnessMap", "aoMap", "emissiveMap"].forEach((key) => {
@@ -384,13 +392,9 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
     resizeObserver.disconnect();
     if (mixer) mixer.stopAllAction();
     controls.dispose();
-    // Only dispose the fallback env if this instance is still on it (the
-    // shared HDRI env is reused by every other viewer — never dispose
-    // that one here).
-    if (fallbackPmrem) {
-      fallbackPmrem.dispose();
-      fallbackEnv.dispose();
-    }
+    // The environment texture is shared/cached across every viewer (see
+    // getSharedEnvironment) — never dispose it here, only this instance's
+    // own renderer/scene resources.
     renderer.dispose();
     if (angleReadout && angleReadout.parentNode) {
       angleReadout.parentNode.removeChild(angleReadout);
