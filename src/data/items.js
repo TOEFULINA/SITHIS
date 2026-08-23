@@ -56,6 +56,10 @@ export const items = [
   placeholder("item-03", "Lonelystar 1", "Tops"),
   placeholder("item-04", "Lonelystar 2", "Tops"),
   placeholder("item-05", "CXR Shirt", "Tops"),
+  {
+    ...placeholder("item-37", "Oversized Kid Cudi Tee", "Tops"),
+    model: "/models/kid-cudi-tee.glb",
+  },
 
   // Bottoms
   placeholder("item-06", "Sticker Print Jorts", "Bottoms"),
