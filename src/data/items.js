@@ -110,7 +110,8 @@ export const items = [
   {
     ...placeholder("item-20", "Foot Clog Packaging", "Packaging"),
     model: "/models/hulk-packaging.glb",
-    viewerFitMargin: 0.8,
+    viewerFitMargin: 0.65,
+    viewerStartAngle: { thetaDeg: 173.9, phiDeg: 89.5 },
     // Source animation is baked at 24fps (confirmed from keyframe spacing)
     // — only play the box-opening portion, not the whole clip.
     viewerAnimationRange: { startFrame: 75, endFrame: 170, fps: 24 },
