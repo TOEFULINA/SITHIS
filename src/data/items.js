@@ -119,7 +119,11 @@ export const items = [
     viewerAnimationRange: { startFrame: 75, endFrame: 179, fps: 24 },
   },
   placeholder("item-21", "KC Foot", "Packaging"),
-  { ...placeholder("item-22", "Clay Shoe", "Packaging"), model: "/models/clay-shoe.glb" },
+  {
+    ...placeholder("item-22", "Clay Shoe", "Packaging"),
+    model: "/models/clay-shoe.glb",
+    viewerStartAngle: { thetaDeg: 301.8, phiDeg: 63.9 },
+  },
   placeholder("item-23", "Spike Sandal", "Packaging"),
   placeholder("item-24", "Spike Shoe", "Packaging"),
   placeholder("item-25", "Bag Clog", "Packaging"),
