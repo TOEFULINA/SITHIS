@@ -149,16 +149,27 @@ export const items = [
   {
     ...placeholder("item-38", "Katamari", "Nail Sets"),
     model: "/models/katamari-nails.glb",
+    viewerFitMargin: 0.75,
+    viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
   },
   {
     ...placeholder("item-39", "Tentacle", "Nail Sets"),
     model: "/models/tentacle-nails.glb",
+    viewerFitMargin: 0.75,
+    viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
   },
 
   // Misc
   {
     ...placeholder("item-40", "Memento Deluxe", "Misc"),
     model: "/models/memento-deluxe.glb",
+    viewerFitMargin: 0.75,
     stats: [{ label: "Year", value: "2024" }],
+  },
+  {
+    ...placeholder("item-41", "Zombie", "Misc"),
+    model: "/models/zombie.glb",
+    viewerStartAngle: { thetaDeg: 230, phiDeg: 90 },
+    stats: [{ label: "Year", value: "2025" }],
   },
 ];
