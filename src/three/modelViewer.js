@@ -2,7 +2,39 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+
+// A real photographed environment (not a procedural box of flat colored
+// panels) is what actually makes metal/glossy surfaces read as reflective
+// — reflections are literally a picture of the environment, so the more
+// detail/structure the source image has (a real space, defined light
+// openings, a horizon), the more convincing they look. This is bundled
+// with three.js itself (examples/textures/equirectangular) and used in
+// three's own PBR material demos for exactly this reason.
+const HDRI_PATH = "/hdri/pedestrian_overpass_1k.hdr";
+
+// Generating the PMREM (prefiltered mipmapped env map three actually
+// samples for reflections) from that image costs real time — decoding a
+// 1k HDR plus several GPU convolution passes. Items get switched a lot
+// (every arrow key press remounts a fresh viewer), so this is done once
+// per page session and cached/reused by every viewer after the first,
+// instead of repeating the load + generate on every single item switch.
+let sharedEnvTexture = null;
+let sharedEnvPromise = null;
+function getSharedEnvironment(renderer) {
+  if (sharedEnvTexture) return Promise.resolve(sharedEnvTexture);
+  if (!sharedEnvPromise) {
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    sharedEnvPromise = new RGBELoader().loadAsync(HDRI_PATH).then((hdrTexture) => {
+      sharedEnvTexture = pmrem.fromEquirectangular(hdrTexture).texture;
+      hdrTexture.dispose();
+      pmrem.dispose();
+      return sharedEnvTexture;
+    });
+  }
+  return sharedEnvPromise;
+}
 
 // Some exported .glb files (anything run through Draco compression to
 // shrink file size — Blender's glTF exporter offers this as a checkbox)
@@ -81,7 +113,12 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
   renderer.setSize(width, height);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.75;
+  // Was tuned against the old procedural RoomEnvironment, which reads as
+  // an evenly bright studio box. The real HDRI swapped in above is a much
+  // darker, moodier space (bright sky opening, dim underpass around it)
+  // — its average contribution to image-based lighting is lower, so the
+  // same exposure now underlights everything. Bumped up to compensate.
+  renderer.toneMappingExposure = 1.7;
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -129,15 +166,44 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
     updateReadout();
   }
 
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environment = envTexture;
+  let disposed = false;
+  // Fallback env for only the very first viewer mounted this session,
+  // while the real HDRI is still loading/generating — every mount after
+  // that hits the cache above and skips this entirely (see
+  // getSharedEnvironment). Cheap procedural room so materials aren't flat
+  // black for that first moment, swapped out the instant the real one's
+  // ready.
+  let fallbackPmrem = null;
+  let fallbackEnv = null;
+  if (sharedEnvTexture) {
+    scene.environment = sharedEnvTexture;
+  } else {
+    fallbackPmrem = new THREE.PMREMGenerator(renderer);
+    fallbackEnv = fallbackPmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = fallbackEnv;
+    getSharedEnvironment(renderer).then((envTexture) => {
+      if (fallbackPmrem) {
+        fallbackPmrem.dispose();
+        fallbackEnv.dispose();
+        fallbackPmrem = null;
+        fallbackEnv = null;
+      }
+      if (!disposed) scene.environment = envTexture;
+    });
+  }
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.15));
-  const key = new THREE.DirectionalLight(0xfff3e0, 0.75);
+  // Bumped up from the pre-HDRI values (0.15 / 0.75 / 0.35) — the real
+  // environment above is a moody, high-contrast underpass rather than an
+  // evenly-bright synthetic room, so its own diffuse/ambient contribution
+  // dropped once it replaced RoomEnvironment. These three key lights do
+  // the job the old flat room used to (an even, bright product-shot base
+  // read), while the environment now handles reflections/specular detail
+  // on its own.
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const key = new THREE.DirectionalLight(0xfff3e0, 2.1);
   key.position.set(3, 5, 4);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0x9fb8ff, 0.35);
+  const rim = new THREE.DirectionalLight(0x9fb8ff, 0.85);
   rim.position.set(-4, 2, -3);
   scene.add(rim);
 
@@ -235,6 +301,21 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
         subject.rotation.y = Math.PI;
         scene.add(subject);
 
+        // GLTFLoader leaves texture anisotropy at its default (1) — fine
+        // head-on, but map detail smears at the grazing angles this
+        // orbit viewer spends most of its time at. Maxing it out per the
+        // GPU's actual cap is a free sharpness win, no quality tradeoff.
+        const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+        subject.traverse((node) => {
+          if (!node.isMesh || !node.material) return;
+          const mats = Array.isArray(node.material) ? node.material : [node.material];
+          mats.forEach((mat) => {
+            ["map", "normalMap", "roughnessMap", "metalnessMap", "aoMap", "emissiveMap"].forEach((key) => {
+              if (mat[key]) mat[key].anisotropy = maxAnisotropy;
+            });
+          });
+        });
+
         if (gltf.animations && gltf.animations.length) {
           mixer = new THREE.AnimationMixer(subject);
           gltf.animations.forEach((clip) => {
@@ -298,12 +379,18 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
   resizeObserver.observe(container);
 
   function dispose() {
+    disposed = true;
     cancelAnimationFrame(raf);
     resizeObserver.disconnect();
     if (mixer) mixer.stopAllAction();
     controls.dispose();
-    pmrem.dispose();
-    envTexture.dispose();
+    // Only dispose the fallback env if this instance is still on it (the
+    // shared HDRI env is reused by every other viewer — never dispose
+    // that one here).
+    if (fallbackPmrem) {
+      fallbackPmrem.dispose();
+      fallbackEnv.dispose();
+    }
     renderer.dispose();
     if (angleReadout && angleReadout.parentNode) {
       angleReadout.parentNode.removeChild(angleReadout);
