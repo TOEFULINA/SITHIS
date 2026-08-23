@@ -130,14 +130,20 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
   }
 
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  // Higher sigma = more blurred environment = softer, less pinpoint specular
+  // highlights on glossy/glass materials (was 0.04 — sharp enough to throw
+  // small hard-edged hotspots).
+  const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.12).texture;
   scene.environment = envTexture;
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.15));
-  const key = new THREE.DirectionalLight(0xfff3e0, 0.75);
+  // More ambient fill relative to the key light narrows the gap between a
+  // model's lit and shadowed sides, which reads as softer overall lighting
+  // without needing actual shadow-casting.
+  scene.add(new THREE.AmbientLight(0xffffff, 0.32));
+  const key = new THREE.DirectionalLight(0xfff3e0, 0.55);
   key.position.set(3, 5, 4);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0x9fb8ff, 0.35);
+  const rim = new THREE.DirectionalLight(0x9fb8ff, 0.28);
   rim.position.set(-4, 2, -3);
   scene.add(rim);
 
