@@ -237,10 +237,13 @@ export const items = [
     ...placeholder("item-23", "Spike Sandal Box", "Packaging"),
     model: "/models/spike-sandal-box.glb",
     viewerFitMargin: 0.85,
+    viewerStartAngle: { thetaDeg: 219.8, phiDeg: 71.2 },
   },
   placeholder("item-24", "Spike Shoe Box", "Packaging"),
   {
     ...placeholder("item-25", "Bag Clog Box", "Packaging"),
+    model: "/models/bag-clog-box.glb",
+    viewerStartAngle: { thetaDeg: 219.8, phiDeg: 71.2 },
     stats: [{ label: "Year", value: "2025" }],
   },
 
