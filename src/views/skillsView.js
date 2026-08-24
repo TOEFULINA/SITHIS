@@ -186,8 +186,8 @@ export function renderSkillsView(container) {
   // Per-ring-step spacing/scale/opacity — computed in JS rather than via
   // CSS calc()/abs() so this doesn't depend on newer CSS math-function
   // support that isn't universal yet.
-  const SPACING_PX = 320;
-  const SCALE_BY_DIST = [1, 0.72];
+  const SPACING_PX = 400;
+  const SCALE_BY_DIST = [1, 0.82];
   const OPACITY_BY_DIST = [1, 0.85];
 
   function render() {
