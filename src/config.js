@@ -11,6 +11,14 @@ export const SITE_NAME = "YOUR NAME";
 // (1920px wide or more) so the blur looks smooth instead of blocky.
 export const BACKGROUND_IMAGE = "/background.jpg";
 
+// Skills is the one screen with its own backdrop instead of the shared
+// one above (a nebula/constellation-map feel instead of the moodier
+// default) — set while that screen is mounted, restored on the way out.
+// Leave null to fall back to a plain placeholder space gradient (see
+// skillsView.js) until you drop a real nebula/space image in and point
+// this at it, e.g. "/hdri/nebula.jpg".
+export const SKILLS_BACKGROUND_IMAGE = null;
+
 // The four compass directions. `key` must match the route used in
 // src/views + src/router.js. Position matches the reference art:
 // SKILLS on top, ITEMS on the right, MAP on the bottom, MAGIC on the left.

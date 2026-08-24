@@ -696,18 +696,160 @@ label[for],
   }
 }
 
-/* ---------- skills ---------- */
+/* ---------- skills: constellation carousel ---------- */
+/* Full-screen, like items/magic — a character-stat-style bar on top (see
+   renderStatsBar in skillsView.js for why it shows different fields than
+   the game's own Name/Level/Race), the constellation ring in the middle,
+   the same bottom nav every screen uses underneath, untouched. */
 
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.5rem;
-}
-.skill-card {
-  padding: 1.5rem;
+.skills-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+}
+
+/* Placeholder backdrop for while SKILLS_BACKGROUND_IMAGE (config.js) is
+   still unset — a plain dark starfield rather than showing the site's
+   default (non-space) background underneath this screen. Swap in a real
+   nebula/space image and this class stops being applied entirely. */
+.skills-fullscreen.skills-fallback-bg {
+  background: radial-gradient(ellipse at 30% 20%, rgba(60, 40, 90, 0.55), transparent 55%),
+    radial-gradient(ellipse at 75% 70%, rgba(20, 50, 70, 0.5), transparent 55%), #05050a;
+}
+.skills-fullscreen.skills-fallback-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* A handful of repeating soft dots at different sizes/opacities reads as
+     a loose starfield without needing an actual image asset. */
+  background-image: radial-gradient(1.5px 1.5px at 10% 20%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 25% 65%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 40% 15%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 55% 80%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 70% 35%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(1px 1px at 85% 60%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 92% 25%, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(1px 1px at 15% 90%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 60% 55%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 35% 40%, rgba(255, 255, 255, 0.55), transparent);
+  background-repeat: no-repeat;
+}
+
+.skills-stats-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  padding: clamp(1.25rem, 4vw, 2rem) 2vw 0.5rem;
+}
+.stats-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3em;
+  min-width: 6em;
+}
+.stats-label {
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  font-size: clamp(0.55rem, 1.6vw, 0.68rem);
+  letter-spacing: 0.14em;
+}
+.stats-value {
+  font-family: "Futura Condensed", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: clamp(0.85rem, 2.4vw, 1.15rem);
+}
+.stats-discipline {
+  min-height: 1.2em; /* keeps the bar's height steady while this field's text changes on rotate */
+}
+.stats-progress {
+  width: clamp(70px, 12vw, 130px);
+  height: 3px;
+  background: var(--panel-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.stats-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(238, 231, 214, 0.5), var(--ink));
+  transition: width 0.35s ease;
+}
+
+.skills-carousel {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* extra bottom padding to clear the fixed bottom nav */
+  padding-bottom: clamp(3.5rem, 9vw, 6rem);
+}
+
+.skills-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.skill-node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(280px, 62vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  cursor: url("/cursors/logo-pointer.png") 0 0, pointer;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.skill-constellation {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.constellation-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(238, 231, 214, 0.35));
+}
+.constellation-lines line {
+  stroke: rgba(238, 231, 214, 0.55);
+  stroke-width: 1;
+}
+.constellation-stars circle {
+  fill: #eee7d6;
+}
+/* Only the centered node shows its readout — neighbors are just the
+   constellation shape, dimmed, so the ring reads as "peeking" rather than
+   a wall of identical info cards. */
+.skill-node .skill-card {
+  display: none;
+}
+.skill-node.is-active .skill-card {
+  display: flex;
+}
+.skill-node.is-active .constellation-svg {
+  filter: drop-shadow(0 0 16px rgba(238, 231, 214, 0.6));
+}
+
+.skill-card {
+  padding: 1.25rem 1.5rem;
+  flex-direction: column;
+  align-items: center;
   gap: 0.6rem;
+  text-align: center;
 }
 .skill-card h3 {
   font-family: "Futura Condensed", sans-serif;
@@ -719,6 +861,7 @@ label[for],
 .skill-dots {
   display: flex;
   gap: 0.35em;
+  justify-content: center;
 }
 .skill-dots span {
   width: 7px;
@@ -729,12 +872,22 @@ label[for],
 .skill-dots span.filled {
   background: var(--ink);
 }
-.skill-card p {
-  margin: 0;
+
+.skills-arrow {
+  position: relative;
+  z-index: 20;
+  flex-shrink: 0;
+  background: none;
+  border: none;
   color: var(--ink-dim);
-  font-size: 0.88rem;
-  font-weight: 300;
-  line-height: 1.5;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1;
+  padding: 0.5em 0.6em;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+.skills-arrow:hover {
+  color: var(--ink);
+  text-shadow: 0 0 14px rgba(238, 231, 214, 0.6);
 }
 
 /* ---------- placeholder screens (magic / map) ---------- */
