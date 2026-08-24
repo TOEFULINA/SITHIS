@@ -233,7 +233,11 @@ export const items = [
     model: "/models/clay-shoe.glb",
     viewerStartAngle: { thetaDeg: 301.8, phiDeg: 63.9 },
   },
-  placeholder("item-23", "Spike Sandal Box", "Packaging"),
+  {
+    ...placeholder("item-23", "Spike Sandal Box", "Packaging"),
+    model: "/models/spike-sandal-box.glb",
+    viewerFitMargin: 0.85,
+  },
   placeholder("item-24", "Spike Shoe Box", "Packaging"),
   {
     ...placeholder("item-25", "Bag Clog Box", "Packaging"),
