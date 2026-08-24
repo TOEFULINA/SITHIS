@@ -535,11 +535,11 @@ label[for] {
 }
 .stat-list li {
   display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  font-size: clamp(0.62rem, 2.2vw, 0.8rem);
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
 }
-.stat-list .stat-label {
+.stat-label {
   color: var(--ink-dim);
   text-transform: uppercase;
   font-size: clamp(0.56rem, 2vw, 0.72rem);
@@ -555,6 +555,7 @@ label[for] {
   line-height: 1.5;
   color: var(--ink-dim);
   font-weight: 300;
+  font-style: italic;
   text-align: center;
   margin: 0;
 }

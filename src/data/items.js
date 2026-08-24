@@ -45,7 +45,10 @@ function placeholder(id, name, category) {
     // A single default stat so every card previews populated — swap in
     // real ones (Materials, Edition, whatever fits) per piece as you go.
     stats: [{ label: "Year", value: "2026" }],
-    description: "",
+    // Filler flavor-text line (mirrors the small italic blurb under a
+    // Skyrim item's stats, e.g. "Increases Disease Resistance by 100%.")
+    // — swap in the real line per item whenever you're ready.
+    description: "Description coming soon.",
   };
 }
 

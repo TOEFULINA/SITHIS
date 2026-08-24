@@ -22,8 +22,13 @@ function getCategories() {
   return ["All", ...unique];
 }
 
+// The category rail (first pane) keeps its curated order — Tops, Bottoms,
+// Accessories, etc, as defined in items.js. The item list (second pane)
+// is sorted alphabetically by name within whichever category is selected,
+// "All" included.
 function itemsInCategory(cat) {
-  return cat === "All" ? items : items.filter((i) => i.category === cat);
+  const list = cat === "All" ? items : items.filter((i) => i.category === cat);
+  return [...list].sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export function renderItemsView(container) {
