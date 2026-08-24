@@ -66,7 +66,8 @@ button,
 [role="button"],
 input[type="button"],
 input[type="submit"],
-label[for] {
+label[for],
+.item-viewer canvas {
   cursor: url("/cursors/logo-pointer.png") 0 0, pointer;
 }
 
@@ -462,7 +463,13 @@ label[for] {
   /* extra bottom padding to clear the nav bar, now fixed at the bottom of
      the screen instead of the top */
   padding: clamp(1.5rem, 6vw, 4rem) 3vw clamp(3.5rem, 9vw, 6rem);
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, gap 0.35s ease;
+}
+/* Click-to-expand mode (see modelViewer.js's onExpandChange /
+   itemsView.js's setExpanded): the info card collapses away and the
+   viewer grows to fill the space it leaves — see the two rules below. */
+.detail-col.viewer-expanded {
+  gap: 0;
 }
 
 .item-viewer {
@@ -475,6 +482,10 @@ label[for] {
      inside it. Raised so the viewer itself claims most of the column. */
   max-height: 76%;
   background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.06), transparent 70%);
+  transition: max-height 0.35s ease;
+}
+.detail-col.viewer-expanded .item-viewer {
+  max-height: 100%;
 }
 .item-viewer canvas {
   display: block;
@@ -497,6 +508,17 @@ label[for] {
   aspect-ratio: 4279 / 1847;
   background-image: url("/ui/info-card-wide.png");
   background-size: 100% 100%;
+  /* Comfortably above the tallest this box ever renders at (~190px at its
+     max 440px width) so it never clips in the normal state — only used as
+     the collapse target below. */
+  max-height: 260px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+}
+.detail-col.viewer-expanded .info-card {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 .info-card-inner {
   height: 100%;

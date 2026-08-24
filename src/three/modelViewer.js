@@ -37,6 +37,16 @@ dracoLoader.setDecoderPath("/draco/");
 // (see SHOW_ANGLE_READOUT below): drag to the angle you want, screenshot
 // it, and the θ/φ shown is exactly what goes here.
 //
+// `onExpandChange` (optional) — called with `true`/`false` whenever the
+// viewer toggles its own "expanded" mode: click the model once to hide
+// the surrounding info card and let this viewer grow to fill that space,
+// with free scroll-to-zoom added on top of the usual rotate; click again
+// to snap back to the normal framed/zoom-locked view. This callback exists
+// because the actual hide/grow layout work happens in the caller's DOM
+// (the info card lives outside this viewer's own container) — this module
+// only owns the 3D/camera side of that mode (unlocking zoom, telling the
+// caller when it changed).
+//
 // Returns a `dispose()` function — call it when the viewer is removed
 // from the DOM (e.g. closing the item modal) to free GPU resources.
 
@@ -53,7 +63,15 @@ const SHOW_ANGLE_READOUT = true;
 // keyframe times in the .glb (a uniform delta of 1/24s = 24fps, 1/30s =
 // 30fps, etc) — don't guess, since trimming with the wrong fps plays the
 // wrong slice.
-export function mountModelViewer(container, modelPath, fitMargin, startOpposite, startAngle, animationRange) {
+export function mountModelViewer(
+  container,
+  modelPath,
+  fitMargin,
+  startOpposite,
+  startAngle,
+  animationRange,
+  onExpandChange
+) {
   const width = container.clientWidth || 400;
   const height = container.clientHeight || 340;
 
@@ -92,6 +110,50 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
   // and look clipped. Rotate-only avoids that entirely while still
   // feeling interactive.
   controls.enableZoom = false;
+
+  // "Expanded" mode — click the model once to hide the info card (handled
+  // by the caller, via onExpandChange below) and unlock zoom; click again
+  // to snap back. Rotate is already free in both modes, so this only ever
+  // toggles enableZoom + the min/maxDistance range.
+  let expanded = false;
+  let pointerDownPos = null;
+  let pointerDownTime = 0;
+  function toggleExpand() {
+    expanded = !expanded;
+    if (expanded) {
+      // camera.position.length() is exactly the locked framed distance
+      // here, since zoom was locked (min===max) up until this toggle —
+      // use it as the zoomed-out ceiling so "zoom in" never lets the model
+      // zoom back out past its normal framed size.
+      const framed = camera.position.length();
+      controls.enableZoom = true;
+      controls.minDistance = framed * 0.3;
+      controls.maxDistance = framed;
+    } else {
+      controls.enableZoom = false;
+      // Re-locks min/maxDistance to a single recomputed value — since
+      // OrbitControls clamps to that on its very next update() (see
+      // animate() below), this alone snaps any zoomed-in view back to the
+      // normal framed one.
+      fitCameraToSphere(false);
+    }
+    if (onExpandChange) onExpandChange(expanded);
+  }
+  renderer.domElement.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    pointerDownPos = { x: e.clientX, y: e.clientY };
+    pointerDownTime = performance.now();
+  });
+  renderer.domElement.addEventListener("pointerup", (e) => {
+    if (!pointerDownPos) return;
+    const dist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
+    const elapsed = performance.now() - pointerDownTime;
+    pointerDownPos = null;
+    // Only counts as a click-to-toggle if the pointer barely moved and
+    // came back up quickly — anything else is a rotate-drag, which
+    // OrbitControls is already handling on this same element.
+    if (dist < 6 && elapsed < 500) toggleExpand();
+  });
 
   // TEMP — see SHOW_ANGLE_READOUT above.
   let angleReadout = null;
@@ -341,9 +403,16 @@ export function mountModelViewer(container, modelPath, fitMargin, startOpposite,
     const h = container.clientHeight;
     if (!w || !h) return;
     camera.aspect = w / h;
-    // Re-clamp the zoom-locked distance for the new aspect without
-    // resetting the camera's current orbit angle.
-    fitCameraToSphere(false);
+    if (expanded) {
+      // Don't touch min/maxDistance here — that's the user's current free
+      // zoom level while expanded, not the locked single-distance frame.
+      // Just keep the projection matrix in sync with the new aspect.
+      camera.updateProjectionMatrix();
+    } else {
+      // Re-clamp the zoom-locked distance for the new aspect without
+      // resetting the camera's current orbit angle.
+      fitCameraToSphere(false);
+    }
     renderer.setSize(w, h);
   }
   const resizeObserver = new ResizeObserver(onResize);

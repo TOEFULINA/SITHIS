@@ -68,7 +68,9 @@ export function renderItemsView(container) {
   const listCol = el.querySelector(".list-col");
   const listRowsViewport = el.querySelector(".list-rows-viewport");
   const listRowsEl = el.querySelector(".list-col-inner");
+  const detailCol = el.querySelector(".detail-col");
   const viewerEl = el.querySelector(".item-viewer");
+  const viewerHint = el.querySelector(".viewer-hint");
   const infoName = el.querySelector(".info-name");
   const statList = el.querySelector(".stat-list");
   const description = el.querySelector(".item-description");
@@ -115,6 +117,15 @@ export function renderItemsView(container) {
     });
   }
 
+  // Click the model once to hide the info card and let the viewer fill
+  // that space, with free zoom added on top of the usual rotate; click
+  // again to snap back. Lives on detailCol (not per-item) so switching
+  // items below always starts back in the normal, non-expanded layout.
+  function setExpanded(isExpanded) {
+    detailCol.classList.toggle("viewer-expanded", isExpanded);
+    viewerHint.textContent = isExpanded ? "Scroll to zoom · Click to exit" : "Drag to rotate";
+  }
+
   function renderDetail() {
     const item = currentList[itemIndex] || null;
     if (item === lastRenderedItem) return; // avoid re-mounting the 3D viewer for no reason
@@ -125,6 +136,9 @@ export function renderItemsView(container) {
       disposeViewer = null;
     }
     viewerEl.querySelectorAll("canvas").forEach((c) => c.remove());
+    // A new item always starts un-expanded, even if the previous one was
+    // mid-zoom when you switched away from it.
+    setExpanded(false);
 
     if (!item) {
       infoName.textContent = "";
@@ -139,7 +153,8 @@ export function renderItemsView(container) {
       item.viewerFitMargin,
       item.viewerStartOpposite,
       item.viewerStartAngle,
-      item.viewerAnimationRange
+      item.viewerAnimationRange,
+      setExpanded
     );
     infoName.textContent = item.name;
     statList.innerHTML = item.stats
@@ -190,6 +205,68 @@ export function renderItemsView(container) {
     }
     render();
   }
+
+  // Mouse-wheel / trackpad and touch-swipe scrolling over a pane moves the
+  // selection up/down within it — the same effect as pressing Up/Down
+  // while that pane has focus, just reachable without a keyboard. This
+  // matters most on mobile/touch, where arrow keys aren't available and
+  // the rows can look "scrollable" even though clicking was previously
+  // the only way to move through them.
+  function attachPaneScroll(paneEl, pane) {
+    let wheelCooldown = false;
+    paneEl.addEventListener(
+      "wheel",
+      (e) => {
+        e.preventDefault();
+        if (wheelCooldown) return;
+        const delta = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0;
+        if (delta === 0) return;
+        focusPane = pane;
+        moveSelection(delta);
+        // One step per "tick" of scrolling, rather than one step per pixel
+        // of deltaY — a single trackpad/wheel gesture can report dozens of
+        // small events, which would otherwise blow straight through the
+        // whole list.
+        wheelCooldown = true;
+        setTimeout(() => {
+          wheelCooldown = false;
+        }, 120);
+      },
+      { passive: false }
+    );
+
+    let touchStartY = null;
+    const TOUCH_STEP = 28; // px of swipe per row-step — tuned to feel like a deliberate flick, not a twitch
+    paneEl.addEventListener(
+      "touchstart",
+      (e) => {
+        if (e.touches.length !== 1) return;
+        touchStartY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+    paneEl.addEventListener(
+      "touchmove",
+      (e) => {
+        if (touchStartY === null) return;
+        const y = e.touches[0].clientY;
+        const dy = y - touchStartY;
+        if (Math.abs(dy) < TOUCH_STEP) return;
+        e.preventDefault();
+        focusPane = pane;
+        // Swiping up (finger moves up, dy < 0) reveals rows further down
+        // the list, same convention as a native scroll — so that's "next".
+        moveSelection(dy < 0 ? 1 : -1);
+        touchStartY = y; // rebase so one long swipe can step multiple rows
+      },
+      { passive: false }
+    );
+    paneEl.addEventListener("touchend", () => {
+      touchStartY = null;
+    });
+  }
+  attachPaneScroll(categoryCol, "categories");
+  attachPaneScroll(listCol, "list");
 
   function onKeyDown(e) {
     if (!["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
