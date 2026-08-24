@@ -206,13 +206,39 @@ export function renderItemsView(container) {
     render();
   }
 
+  // Scrolling the category rail moves categoryIndex, same as the category
+  // branch of moveSelection above — but unlike keyboard Up/Down while
+  // categories has focus, this does NOT collapse the list/detail panes
+  // back to rail-only. Clicking a category row already keeps them open
+  // (jumps straight into "list" focus, previewing that category's items);
+  // scrolling through categories should feel the same — a live preview of
+  // whatever category you're currently on, not a collapse-then-reopen on
+  // every tick.
+  function scrollCategory(delta) {
+    const next = Math.min(categories.length - 1, Math.max(0, categoryIndex + delta));
+    if (next === categoryIndex) return;
+    categoryIndex = next;
+    currentList = itemsInCategory(categories[categoryIndex]);
+    itemIndex = 0;
+    focusPane = "list";
+    render();
+  }
+
+  function scrollList(delta) {
+    const next = Math.min(currentList.length - 1, Math.max(0, itemIndex + delta));
+    if (next === itemIndex) return;
+    itemIndex = next;
+    focusPane = "list";
+    render();
+  }
+
   // Mouse-wheel / trackpad and touch-swipe scrolling over a pane moves the
   // selection up/down within it — the same effect as pressing Up/Down
   // while that pane has focus, just reachable without a keyboard. This
   // matters most on mobile/touch, where arrow keys aren't available and
   // the rows can look "scrollable" even though clicking was previously
   // the only way to move through them.
-  function attachPaneScroll(paneEl, pane) {
+  function attachPaneScroll(paneEl, step) {
     let wheelCooldown = false;
     paneEl.addEventListener(
       "wheel",
@@ -221,8 +247,7 @@ export function renderItemsView(container) {
         if (wheelCooldown) return;
         const delta = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0;
         if (delta === 0) return;
-        focusPane = pane;
-        moveSelection(delta);
+        step(delta);
         // One step per "tick" of scrolling, rather than one step per pixel
         // of deltaY — a single trackpad/wheel gesture can report dozens of
         // small events, which would otherwise blow straight through the
@@ -253,10 +278,9 @@ export function renderItemsView(container) {
         const dy = y - touchStartY;
         if (Math.abs(dy) < TOUCH_STEP) return;
         e.preventDefault();
-        focusPane = pane;
         // Swiping up (finger moves up, dy < 0) reveals rows further down
         // the list, same convention as a native scroll — so that's "next".
-        moveSelection(dy < 0 ? 1 : -1);
+        step(dy < 0 ? 1 : -1);
         touchStartY = y; // rebase so one long swipe can step multiple rows
       },
       { passive: false }
@@ -265,8 +289,8 @@ export function renderItemsView(container) {
       touchStartY = null;
     });
   }
-  attachPaneScroll(categoryCol, "categories");
-  attachPaneScroll(listCol, "list");
+  attachPaneScroll(categoryCol, scrollCategory);
+  attachPaneScroll(listCol, scrollList);
 
   function onKeyDown(e) {
     if (!["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
