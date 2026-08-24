@@ -160,7 +160,7 @@ export function renderSkillsView(container) {
     node.className = "skill-node";
     node.innerHTML = `
       <div class="skill-constellation">${buildConstellationSVG(skill.id)}</div>
-      <div class="skill-card panel">
+      <div class="skill-card">
         <h3 class="rune">${skill.title}</h3>
         <img class="skill-divider" src="/ui/skill-divider.png" alt="" />
         ${
@@ -186,9 +186,9 @@ export function renderSkillsView(container) {
   // Per-ring-step spacing/scale/opacity — computed in JS rather than via
   // CSS calc()/abs() so this doesn't depend on newer CSS math-function
   // support that isn't universal yet.
-  const SPACING_PX = 300;
-  const SCALE_BY_DIST = [1, 0.6, 0.38];
-  const OPACITY_BY_DIST = [1, 0.5, 0.2];
+  const SPACING_PX = 320;
+  const SCALE_BY_DIST = [1, 0.72];
+  const OPACITY_BY_DIST = [1, 0.85];
 
   function render() {
     const n = skills.length;
