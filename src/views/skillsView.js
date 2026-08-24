@@ -162,6 +162,7 @@ export function renderSkillsView(container) {
       <div class="skill-constellation">${buildConstellationSVG(skill.id)}</div>
       <div class="skill-card panel">
         <h3 class="rune">${skill.title}</h3>
+        <img class="skill-divider" src="/ui/skill-divider.png" alt="" />
         ${
           skill.level != null
             ? `<div class="skill-dots">${Array.from({ length: 5 })

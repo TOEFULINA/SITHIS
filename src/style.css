@@ -858,6 +858,13 @@ label[for],
   font-size: 1.1rem;
   letter-spacing: 0.05em;
 }
+.skill-divider {
+  width: min(220px, 70%);
+  height: auto;
+  display: block;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 6px rgba(238, 231, 214, 0.3));
+}
 .skill-dots {
   display: flex;
   gap: 0.35em;
