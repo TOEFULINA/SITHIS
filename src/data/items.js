@@ -30,9 +30,9 @@
 //            .glb's own keyframe spacing for the real fps before setting
 //            this (see src/three/modelViewer.js) — don't assume 24 or 30.
 //
-// Every entry below is a real title from your catalog with no model,
-// stats, or description yet — swap in the real details piece by piece
-// whenever you're ready; the layout adapts automatically either way.
+// Names/stats below are the real, final values — swap in real descriptions
+// per piece whenever you're ready; the layout adapts automatically either
+// way.
 // ---------------------------------------------------------------------------
 
 function placeholder(id, name, category) {
@@ -54,35 +54,94 @@ function placeholder(id, name, category) {
 
 export const items = [
   // Tops
-  placeholder("item-01", "Joony Memento", "Tops"),
-  placeholder("item-02", "Shitumss", "Tops"),
-  placeholder("item-03", "Lonelystar 1", "Tops"),
-  placeholder("item-04", "Lonelystar 2", "Tops"),
-  placeholder("item-05", "CXR Shirt", "Tops"),
+  {
+    ...placeholder("item-01", "Memento Deluxe Tee", "Tops"),
+    stats: [{ label: "Year", value: "2024" }],
+  },
+  {
+    ...placeholder("item-02", "Shitumss Tee", "Tops"),
+    stats: [{ label: "Year", value: "2023" }],
+  },
+  {
+    ...placeholder("item-03", "Illustrated Mesh Tee", "Tops"),
+    stats: [{ label: "Year", value: "2023" }],
+  },
+  {
+    ...placeholder("item-04", "Illustrated Mesh Tee 2", "Tops"),
+    stats: [{ label: "Year", value: "2024" }],
+  },
+  {
+    ...placeholder("item-05", "CXR World Championship Tee", "Tops"),
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "UNRELEASED" },
+    ],
+  },
   {
     ...placeholder("item-37", "Oversized Kid Cudi Tee", "Tops"),
     model: "/models/kid-cudi-tee.glb",
+    stats: [
+      { label: "Year", value: "2024" },
+      { label: "value", value: "LIMITED" },
+    ],
   },
 
   // Bottoms
-  placeholder("item-06", "Sticker Print Jorts", "Bottoms"),
-  placeholder("item-07", "Black Illustrated Shorts", "Bottoms"),
-  placeholder("item-08", "Glo Sweatshort", "Bottoms"),
-  placeholder("item-09", "Glo SS Black", "Bottoms"),
+  {
+    ...placeholder("item-06", "Sticker Print Jorts", "Bottoms"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
+  {
+    ...placeholder("item-07", "Black Illustrated Shorts", "Bottoms"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
+  {
+    ...placeholder("item-08", "Glo Sweatshort", "Bottoms"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
+  {
+    ...placeholder("item-09", "Glo SS Black", "Bottoms"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
 
   // Accessories
-  placeholder("item-10", "Croc Belt", "Accessories"),
   {
-    ...placeholder("item-11", "Pins Bag", "Accessories"),
+    ...placeholder("item-10", "Charm Belt", "Accessories"),
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "ARCHIVED" },
+    ],
+  },
+  {
+    ...placeholder("item-11", "Button Covered Bag", "Accessories"),
     model: "/models/pins-bag.glb",
     viewerFitMargin: 0.8,
     viewerStartAngle: { thetaDeg: 180, phiDeg: 60 },
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "PERSONAL" },
+    ],
   },
-  placeholder("item-12", "Engraved Headphones", "Accessories"),
-  placeholder("item-13", "Deco Cases", "Accessories"),
-  placeholder("item-14", "Beef Ring / Spaghetti Rings, etc.", "Accessories"),
   {
-    ...placeholder("item-43", "Steakpods", "Accessories"),
+    ...placeholder("item-12", "Engraved Headphones", "Accessories"),
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "PERSONAL" },
+    ],
+  },
+  {
+    ...placeholder("item-13", "Deco Majora's Mask Case", "Accessories"),
+    stats: [
+      { label: "Year", value: "2024" },
+      { label: "Value", value: "PERSONAL" },
+    ],
+  },
+  {
+    ...placeholder("item-14", "Beef Ring / Spaghetti Rings, etc.", "Accessories"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
+  {
+    ...placeholder("item-43", "Steakpods Case", "Accessories"),
     model: "/models/steakpods.glb",
     viewerFitMargin: 0.8,
     viewerStartAngle: { thetaDeg: 180, phiDeg: 90 },
@@ -97,6 +156,7 @@ export const items = [
     // than the safe-for-anything default without clipping on rotation.
     viewerFitMargin: 0.5,
     viewerStartAngle: { thetaDeg: 267.5, phiDeg: 84.4 },
+    stats: [{ label: "Year", value: "2025" }],
   },
   {
     ...placeholder("item-16", "Black Claymation Shoe", "Footwear"),
@@ -105,36 +165,55 @@ export const items = [
     // — safe to reuse its exact framing and starting angle.
     viewerFitMargin: 0.5,
     viewerStartAngle: { thetaDeg: 267.5, phiDeg: 84.4 },
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Price", value: "120" },
+    ],
   },
   {
-    ...placeholder("item-17", "Glo Clog", "Footwear"),
+    ...placeholder("item-17", "Glo Gang Slides", "Footwear"),
     model: "/models/glogang-clog.glb",
     viewerFitMargin: 0.7,
     viewerStartAngle: { thetaDeg: 210.0, phiDeg: 72.6 },
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "VALUE", value: "110" },
+    ],
   },
   {
-    ...placeholder("item-18", "Beef Clog", "Footwear"),
+    ...placeholder("item-18", "Steak Slides", "Footwear"),
     model: "/models/beef-clog.glb",
     viewerFitMargin: 0.7,
     viewerStartAngle: { thetaDeg: 12.6, phiDeg: 75.2 },
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "110" },
+    ],
   },
   {
-    ...placeholder("item-19", "Sticker Docs", "Footwear"),
+    ...placeholder("item-19", "Sticker Print Boots", "Footwear"),
     model: "/models/sticker-docs.glb",
     viewerFitMargin: 0.7,
     viewerStartAngle: { thetaDeg: 250.8, phiDeg: 79.4 },
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "VALUE", value: "200" },
+    ],
   },
   {
     ...placeholder("item-42", "Brazil Runner", "Footwear"),
     model: "/models/brazil-runner.glb",
     viewerFitMargin: 0.7,
     viewerStartAngle: { thetaDeg: 210, phiDeg: 72 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "VALUE", value: "125" },
+    ],
   },
 
   // Packaging
   {
-    ...placeholder("item-20", "Foot Clog Packaging", "Packaging"),
+    ...placeholder("item-20", "Foot Clog Box", "Packaging"),
     model: "/models/hulk-packaging.glb",
     viewerFitMargin: 0.85,
     viewerStartAngle: { thetaDeg: 173.9, phiDeg: 89.5 },
@@ -143,58 +222,83 @@ export const items = [
     // true last keyframe is frame 179 (7.458333s @ 24fps) — stopping short
     // of that cuts the loop off before it settles on its final pose.
     viewerAnimationRange: { startFrame: 75, endFrame: 179, fps: 24 },
+    stats: [{ label: "Year", value: "2024" }],
   },
-  placeholder("item-21", "KC Foot", "Packaging"),
   {
-    ...placeholder("item-22", "Clay Shoe", "Packaging"),
+    ...placeholder("item-21", "Kid Cudi x Bravest Foot Clog Box", "Packaging"),
+    stats: [{ label: "Year", value: "2024" }],
+  },
+  {
+    ...placeholder("item-22", "Claymation Shoe Box", "Packaging"),
     model: "/models/clay-shoe.glb",
     viewerStartAngle: { thetaDeg: 301.8, phiDeg: 63.9 },
   },
-  placeholder("item-23", "Spike Sandal", "Packaging"),
-  placeholder("item-24", "Spike Shoe", "Packaging"),
-  placeholder("item-25", "Bag Clog", "Packaging"),
+  placeholder("item-23", "Spike Sandal Box", "Packaging"),
+  placeholder("item-24", "Spike Shoe Box", "Packaging"),
+  {
+    ...placeholder("item-25", "Bag Clog Box", "Packaging"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
 
   // Action Figures
-  placeholder("item-26", "Kid Cudi", "Action Figures"),
-  placeholder("item-27", "Joony", "Action Figures"),
+  {
+    ...placeholder("item-26", "Kid Cudi", "Action Figures"),
+    stats: [{ label: "Year", value: "2024" }],
+  },
+  {
+    ...placeholder("item-27", "Joony", "Action Figures"),
+    stats: [{ label: "Year", value: "2023" }],
+  },
   placeholder("item-28", "Eris", "Action Figures"),
   placeholder("item-29", "Me", "Action Figures"),
   placeholder("item-30", "Kanii", "Action Figures"),
   placeholder("item-31", "Drezzdon", "Action Figures"),
 
   // Nail Sets
-  placeholder("item-32", "Beef", "Nail Sets"),
-  placeholder("item-33", "Pork", "Nail Sets"),
-  placeholder("item-34", "Halloween Animal Crossing", "Nail Sets"),
   {
-    ...placeholder("item-35", "Splatoon Collage Nails", "Nail Sets"),
+    ...placeholder("item-32", "Raw Beef Set", "Nail Sets"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
+  {
+    ...placeholder("item-33", "Raw Pork Set", "Nail Sets"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
+  {
+    ...placeholder("item-34", "Halloween Animal Crossing Set", "Nail Sets"),
+    stats: [{ label: "Year", value: "2025" }],
+  },
+  {
+    ...placeholder("item-35", "Splatoon Sticker Collage Set", "Nail Sets"),
     model: "/models/splatoon-collage-nails.glb",
     viewerFitMargin: 0.75,
     viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
+    stats: [{ label: "Year", value: "2024" }],
   },
-  placeholder("item-36", "Berserk Beheld", "Nail Sets"),
+  placeholder("item-36", "Deco Berserk Set", "Nail Sets"),
   {
-    ...placeholder("item-38", "Katamari", "Nail Sets"),
+    ...placeholder("item-38", "Deco Katamari Set", "Nail Sets"),
     model: "/models/katamari-nails.glb",
     viewerFitMargin: 0.75,
     viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
+    stats: [{ label: "Year", value: "2025" }],
   },
   {
-    ...placeholder("item-39", "Tentacle", "Nail Sets"),
+    ...placeholder("item-39", "Deco Tentacle Set", "Nail Sets"),
     model: "/models/tentacle-nails.glb",
     viewerFitMargin: 0.75,
     viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
+    stats: [{ label: "Year", value: "2026" }],
   },
 
   // Misc
   {
-    ...placeholder("item-40", "Memento Deluxe", "Misc"),
+    ...placeholder("item-40", "Memento Deluxe Cassette", "Misc"),
     model: "/models/memento-deluxe.glb",
     viewerFitMargin: 0.75,
     stats: [{ label: "Year", value: "2024" }],
   },
   {
-    ...placeholder("item-41", "Zombie", "Misc"),
+    ...placeholder("item-41", "Zombie Zip Bag", "Misc"),
     model: "/models/zombie.glb",
     viewerStartAngle: { thetaDeg: 230, phiDeg: 90 },
     stats: [{ label: "Year", value: "2025" }],
