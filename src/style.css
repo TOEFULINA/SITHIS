@@ -95,6 +95,12 @@ label[for],
     radial-gradient(ellipse at 70% 80%, rgba(30, 40, 35, 0.4), transparent 60%),
     var(--bg-image, none);
 }
+/* Skills only: the backdrop is a wide panorama that pans as you rotate
+   through the ring (see updateBgPan in skillsView.js) — this transition
+   is what makes that pan glide instead of snapping. */
+#bg-layer.bg-panning {
+  transition: background-position 0.6s ease;
+}
 
 #bg-overlay {
   position: fixed;

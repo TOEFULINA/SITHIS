@@ -206,6 +206,7 @@ export function renderSkillsView(container) {
     posEl.textContent = `${String(active + 1).padStart(2, "0")} / ${String(n).padStart(2, "0")}`;
     progressFill.style.width = `${((active + 0.5) / n) * 100}%`;
     disciplineEl.textContent = skills[active]?.title ?? "";
+    updateBgPan();
   }
 
   function rotate(delta) {
@@ -232,13 +233,18 @@ export function renderSkillsView(container) {
 
   // Skills gets its own backdrop instead of the shared one every other
   // screen uses (see SKILLS_BACKGROUND_IMAGE in config.js) — swapped in on
-  // mount, restored on the way out.
+  // mount, restored on the way out. The image is a wide panorama, and it
+  // pans horizontally as you rotate through the ring (see updateBgPan,
+  // called from render()) instead of sitting static — a real nebula/space
+  // image slides by like a skybox as you move between skills.
   const bgLayer = document.getElementById("bg-layer");
   const previousBg = bgLayer ? bgLayer.style.getPropertyValue("--bg-image") : null;
+  const previousBgPosition = bgLayer ? bgLayer.style.backgroundPosition : "";
   if (bgLayer) {
     if (SKILLS_BACKGROUND_IMAGE) {
       bgLayer.style.setProperty("--bg-image", `url(${SKILLS_BACKGROUND_IMAGE})`);
       el.classList.remove("skills-fallback-bg");
+      bgLayer.classList.add("bg-panning");
     } else {
       // No real nebula/space image set yet — fall back to a plain CSS
       // starfield placeholder (see .skills-fullscreen.skills-fallback-bg)
@@ -248,14 +254,28 @@ export function renderSkillsView(container) {
     }
   }
 
+  // Slides the backdrop's background-position from its left edge (skill 0)
+  // to its right edge (the last skill) as `active` moves through the ring,
+  // so the panorama scrolls by in sync with </>. No-ops without a real
+  // background image (nothing to pan).
+  function updateBgPan() {
+    if (!bgLayer || !SKILLS_BACKGROUND_IMAGE) return;
+    const n = skills.length;
+    const pct = n > 1 ? (active / (n - 1)) * 100 : 50;
+    bgLayer.style.backgroundPosition = `${pct}% center`;
+  }
+
   render();
   container.appendChild(el);
 
   return () => {
     document.removeEventListener("keydown", onKeyDown);
     if (bgLayer) {
+      bgLayer.classList.remove("bg-panning");
       if (previousBg) bgLayer.style.setProperty("--bg-image", previousBg);
       else bgLayer.style.removeProperty("--bg-image");
+      if (previousBgPosition) bgLayer.style.backgroundPosition = previousBgPosition;
+      else bgLayer.style.removeProperty("background-position");
     }
   };
 }

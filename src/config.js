@@ -17,7 +17,7 @@ export const BACKGROUND_IMAGE = "/background.jpg";
 // Leave null to fall back to a plain placeholder space gradient (see
 // skillsView.js) until you drop a real nebula/space image in and point
 // this at it, e.g. "/hdri/nebula.jpg".
-export const SKILLS_BACKGROUND_IMAGE = null;
+export const SKILLS_BACKGROUND_IMAGE = "/images/skills-background.webp";
 
 // The four compass directions. `key` must match the route used in
 // src/views + src/router.js. Position matches the reference art:
