@@ -121,8 +121,14 @@ export function renderItemsView(container) {
   // that space, with free zoom added on top of the usual rotate; click
   // again to snap back. Lives on detailCol (not per-item) so switching
   // items below always starts back in the normal, non-expanded layout.
+  // Also toggles "model-fullscreen" on the outer element — on mobile (see
+  // the matching @media block in style.css) that additionally hides the
+  // category rail, item list, and bottom nav so the model really takes
+  // over the whole screen instead of just the space the info card left;
+  // on desktop that class does nothing, there's room for both already.
   function setExpanded(isExpanded) {
     detailCol.classList.toggle("viewer-expanded", isExpanded);
+    el.classList.toggle("model-fullscreen", isExpanded);
     viewerHint.textContent = isExpanded ? "Scroll to zoom · Click to exit" : "Drag to rotate";
   }
 

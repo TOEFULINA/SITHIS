@@ -97,9 +97,18 @@ label[for],
 }
 /* Skills only: the backdrop is a wide panorama that pans as you rotate
    through the ring (see updateBgPan in skillsView.js) — this transition
-   is what makes that pan glide instead of snapping. */
+   is what makes that pan glide instead of snapping. Zoomed in well past
+   the plain "cover" size (which barely has any excess width to pan
+   across) so 0%->100% travels a long, clearly-visible distance instead
+   of a subtle nudge — matching how far the constellations themselves
+   move node-to-node. */
 #bg-layer.bg-panning {
   transition: background-position 0.6s ease;
+  background-size: 320% auto;
+  /* Crisp, not the moody blurred treatment every other screen's shared
+     backdrop gets — this is meant to read as an actual scene, not an
+     ambient wash behind a panel. */
+  filter: brightness(0.65) saturate(1.05);
 }
 
 #bg-overlay {
@@ -702,6 +711,25 @@ label[for],
   }
 }
 
+/* Mobile only: tapping the 3D model already collapses the info card (see
+   .detail-col.viewer-expanded above) — on a phone that still leaves the
+   category rail, item list, and bottom nav visible, eating a big chunk of
+   the screen. .model-fullscreen (toggled alongside .viewer-expanded, see
+   setExpanded in itemsView.js) hides all three so the model actually
+   fills the whole screen; tapping again restores everything exactly as
+   it was. Desktop has room for both already, so this stays scoped to the
+   narrow breakpoint. */
+@media (max-width: 860px) {
+  .items-fullscreen.model-fullscreen .category-col,
+  .items-fullscreen.model-fullscreen .list-col,
+  .items-fullscreen.model-fullscreen .top-nav {
+    display: none;
+  }
+  .items-fullscreen.model-fullscreen .detail-col {
+    padding: 0;
+  }
+}
+
 /* ---------- skills: constellation carousel ---------- */
 /* Full-screen, like items/magic — a character-stat-style bar on top (see
    renderStatsBar in skillsView.js for why it shows different fields than
@@ -815,7 +843,9 @@ label[for],
   align-items: center;
   gap: 1rem;
   cursor: url("/cursors/logo-pointer.png") 0 0, pointer;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  /* Slow, decelerating swing instead of a quick snap — reads as something
+     big and heavy settling into place rather than a light UI flick. */
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
 }
 .skill-constellation {
   width: 100%;
@@ -837,21 +867,20 @@ label[for],
 .constellation-stars circle {
   fill: #eee7d6;
 }
-/* Only the centered node shows its readout — neighbors are just the
-   constellation shape, dimmed, so the ring reads as "peeking" rather than
-   a wall of identical info cards. */
-.skill-node .skill-card {
-  display: none;
-}
-.skill-node.is-active .skill-card {
-  display: flex;
-}
+/* Matching the reference: every visible skill shows its own name + bar at
+   the same time, not just the centered one — only the description line
+   is reserved for whichever skill is actually centered. */
 .skill-node.is-active .constellation-svg {
   filter: drop-shadow(0 0 16px rgba(238, 231, 214, 0.6));
+}
+.skill-node:not(.is-active) .skill-card .item-description,
+.skill-node:not(.is-active) .skill-card .skill-dots {
+  display: none;
 }
 
 .skill-card {
   /* No panel/box — sits directly on the starfield, matching the reference. */
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.45rem;
