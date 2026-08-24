@@ -243,7 +243,7 @@ export const items = [
   {
     ...placeholder("item-25", "Bag Clog Box", "Packaging"),
     model: "/models/bag-clog-box.glb",
-    viewerStartAngle: { thetaDeg: 219.8, phiDeg: 71.2 },
+    viewerStartAngle: { thetaDeg: 313.0, phiDeg: 52.1 },
     stats: [{ label: "Year", value: "2025" }],
   },
 
