@@ -737,6 +737,18 @@ label[for],
   }
 }
 
+/* Mobile only: a portrait phone screen crops a landscape backdrop down to
+   a narrow sliver at the default near-1x scale, so the scene reads as
+   mostly empty space around the edges. Zoomed in hard here so the subject
+   actually fills the frame — this stacks on top of #bg-layer's own
+   transform (and the skills view's panning transition, which doesn't set
+   its own transform and so inherits this too). */
+@media (max-width: 860px) {
+  #bg-layer {
+    transform: scale(1.8);
+  }
+}
+
 /* Mobile only: tapping the 3D model already collapses the info card (see
    .detail-col.viewer-expanded above) — on a phone that still leaves the
    category rail, item list, and bottom nav visible, eating a big chunk of
