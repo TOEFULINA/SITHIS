@@ -55,10 +55,6 @@ function placeholder(id, name, category) {
 export const items = [
   // Tops
   {
-    ...placeholder("item-01", "Memento Deluxe Tee", "Tops"),
-    stats: [{ label: "Year", value: "2024" }],
-  },
-  {
     ...placeholder("item-02", "Shitumss Tee", "Tops"),
     model: "/models/shitumss-tee.glb",
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
@@ -69,7 +65,8 @@ export const items = [
     stats: [{ label: "Year", value: "2023" }],
   },
   {
-    ...placeholder("item-04", "Illustrated Mesh Tee 2", "Tops"),
+    ...placeholder("item-04", "Stargirl x Sweetly Mesh Tee", "Tops"),
+    model: "/models/illustrated-mesh-tee-2.glb",
     stats: [{ label: "Year", value: "2024" }],
   },
   {
@@ -116,8 +113,13 @@ export const items = [
   {
     ...placeholder("item-48", "Dess Dior Crop Tee", "Tops"),
     model: "/models/dess-dior-crop-tee.glb",
-    viewerStartAngle: { thetaDeg: 221.0, phiDeg: 64.8 },
+    viewerStartAngle: { thetaDeg: 179.0, phiDeg: 71.6 },
     stats: [{ label: "Year", value: "2026" }],
+  },
+  {
+    ...placeholder("item-49", "Stargirl Mesh Tee", "Tops"),
+    model: "/models/stargirl-mesh-tee.glb",
+    stats: [{ label: "Year", value: "2023" }],
   },
 
   // Bottoms
@@ -244,6 +246,12 @@ export const items = [
       { label: "VALUE", value: "125" },
     ],
   },
+  {
+    ...placeholder("item-50", "Claymation Slide", "Footwear"),
+    model: "/models/clay-slide.glb",
+    viewerFitMargin: 0.7,
+    stats: [{ label: "Year", value: "2026" }],
+  },
 
   // Packaging
   {
@@ -335,7 +343,7 @@ export const items = [
   {
     ...placeholder("item-40", "Memento Deluxe Cassette", "Misc"),
     model: "/models/memento-deluxe.glb",
-    viewerFitMargin: 0.75,
+    viewerFitMargin: 0.65,
     stats: [{ label: "Year", value: "2024" }],
   },
   {

@@ -84,8 +84,8 @@ label[for],
   inset: -3vh -3vw;
   background-image: var(--bg-image, none);
   background-size: cover;
-  background-position: center;
-  filter: blur(3px) brightness(0.55) saturate(0.9);
+  background-position: center 25%;
+  filter: blur(3px);
   transform: scale(1.02);
   z-index: 0;
   /* soft fallback so the page never looks broken before an image is set */
@@ -110,8 +110,8 @@ label[for],
   background-size: 320% auto;
   /* Crisp, not the moody blurred treatment every other screen's shared
      backdrop gets — this is meant to read as an actual scene, not an
-     ambient wash behind a panel. */
-  filter: brightness(0.65) saturate(1.05);
+     ambient wash behind a panel. Regular brightness, no dark overlay. */
+  filter: saturate(1.05);
   /* Held back and revealed slowly instead of swapping in instantly on
      navigation — the scene shouldn't be visible before the constellation
      itself is. Delayed to start around when .skills-carousel's own
