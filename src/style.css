@@ -103,7 +103,10 @@ label[for],
    of a subtle nudge — matching how far the constellations themselves
    move node-to-node. */
 #bg-layer.bg-panning {
-  transition: background-position 0.6s ease;
+  /* Same duration/curve as .skill-node's own transition (see below) — the
+     backdrop now moves in lockstep with the icons' heavy, decelerating
+     swing instead of drifting on its own lighter timing. */
+  transition: background-position 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   background-size: 320% auto;
   /* Crisp, not the moody blurred treatment every other screen's shared
      backdrop gets — this is meant to read as an actual scene, not an
@@ -670,14 +673,20 @@ label[for],
   padding-right: 0.25rem;
 }
 .gallery-thumb {
+  /* No border/frame — just the images butted together, so it reads as one
+     collage instead of a grid of bordered tiles. This is a <button>, so
+     border/background also have to be stripped explicitly — otherwise
+     the browser's own default button chrome (a raised outset border)
+     shows up in place of the border we removed. */
   position: relative;
   display: block;
   width: 100%;
   break-inside: avoid;
   margin: 0 0 0.4rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--panel-border);
-  transition: border-color 0.2s ease, filter 0.2s ease;
+  border: none;
+  background: none;
+  padding: 0;
+  transition: filter 0.2s ease;
   filter: brightness(0.85);
 }
 .gallery-thumb img {
@@ -687,7 +696,6 @@ label[for],
 }
 .gallery-thumb:hover,
 .gallery-thumb:focus-visible {
-  border-color: var(--ink);
   filter: brightness(1.05);
   outline: none;
 }
