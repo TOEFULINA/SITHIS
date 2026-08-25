@@ -176,7 +176,8 @@ export const items = [
     ],
   },
   {
-    ...placeholder("item-14", "Beef Ring", "Accessories"),
+    ...placeholder("item-14", "Steak Ring", "Accessories"),
+    model: "/models/steak-ring.glb",
     stats: [{ label: "Year", value: "2025" }],
   },
   {
