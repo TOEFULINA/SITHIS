@@ -119,6 +119,7 @@ export const items = [
   {
     ...placeholder("item-49", "Stargirl Mesh Tee", "Tops"),
     model: "/models/stargirl-mesh-tee.glb",
+    viewerStartAngle: { thetaDeg: 190.7, phiDeg: 81.9 },
     stats: [{ label: "Year", value: "2023" }],
   },
 
