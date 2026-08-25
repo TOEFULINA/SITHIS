@@ -852,6 +852,29 @@ label[for],
   }
 }
 
+/* Mobile only: .info-card's aspect-ratio (locked to the wide banner art's
+   own shape) is what keeps it short-and-wide on desktop — but on a narrow
+   phone screen, the same aspect-ratio against a much narrower box works
+   out to a much SHORTER box too, too short to fit a 3-stat row plus a
+   description without clipping (the card clips its own overflow). There's
+   no separate taller art asset, so instead the aspect-ratio is dropped
+   here and the card is allowed to grow to whatever height its content
+   actually needs — the background art stretches to match (a mild, mostly
+   unnoticeable stretch of the corner motif) rather than the text getting
+   cut off. .item-viewer above it is a flexible flex child, so it simply
+   yields the extra space rather than anything overlapping or scrolling. */
+@media (max-width: 860px) {
+  .info-card {
+    aspect-ratio: unset;
+    height: auto;
+    max-height: none;
+  }
+  .info-card-inner {
+    height: auto;
+    padding: 6% 7%;
+  }
+}
+
 /* ---------- skills: constellation carousel ---------- */
 /* Full-screen, like items/magic — a character-stat-style bar on top (see
    renderStatsBar in skillsView.js for why it shows different fields than

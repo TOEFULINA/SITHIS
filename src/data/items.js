@@ -102,7 +102,7 @@ export const items = [
     description: "Shirt design and production file by me for Bravest Studios x Kid Cudi",
   },
   {
-    ...placeholder("item-44", "Band Director Tee", "Tops"),
+    ...placeholder("item-44", "Napoleon Tee", "Tops"),
     model: "/models/band-director-tee.glb",
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [
