@@ -85,6 +85,12 @@ export const items = [
       { label: "value", value: "LIMITED" },
     ],
   },
+  {
+    ...placeholder("item-44", "Band Director Tee", "Tops"),
+    model: "/models/band-director-tee.glb",
+    viewerStartAngle: { thetaDeg: 325, phiDeg: 70 },
+    stats: [{ label: "Year", value: "2026" }],
+  },
 
   // Bottoms
   {
