@@ -559,7 +559,8 @@ label[for],
 .info-name {
   font-size: clamp(0.85rem, 2.1vw, 1.4rem);
   font-weight: 700;
-  text-align: left;
+  text-align: center;
+  letter-spacing: -0.02em;
   /* Always one line — fitTextToOneLine() shrinks font-size (and, as a
      last resort, letter-spacing) at render time so long names fit here
      instead of wrapping. */
@@ -619,6 +620,79 @@ label[for],
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ---------- items: local-only stat/description editor ---------- */
+/* No backend behind this site, so there's nowhere shared to save an
+   edit — instead, edit mode (toggled with the E key, see itemsView.js)
+   makes each stat value and the description directly typeable, and
+   what you type is saved to your own browser's localStorage and shown
+   back to you from then on. The bar below surfaces that state and lets
+   you copy everything you've changed as text to hand back over chat. */
+.stat-value-edit,
+.item-description[contenteditable] {
+  cursor: text;
+  border-radius: 3px;
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(238, 231, 214, 0.3);
+  background: rgba(238, 231, 214, 0.06);
+  padding: 0 0.25em;
+  margin: 0 -0.25em;
+}
+.stat-value-edit:focus,
+.item-description[contenteditable]:focus {
+  box-shadow: 0 0 0 1px rgba(238, 231, 214, 0.7);
+  background: rgba(238, 231, 214, 0.12);
+}
+/* While actively editing, let the description breathe onto more than one
+   line rather than staying clipped to the single-line ellipsis it uses
+   for normal display — you need to be able to see what you're typing. */
+.item-description[contenteditable] {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.edit-mode-bar {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(20, 16, 10, 0.92);
+  border-bottom: 1px solid rgba(212, 175, 100, 0.5);
+  font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+  letter-spacing: 0.06em;
+}
+.items-fullscreen.edit-mode-active .edit-mode-bar {
+  display: flex;
+  flex-wrap: wrap;
+}
+.edit-mode-label {
+  color: #d4af64;
+  text-transform: uppercase;
+}
+.edit-copy-btn,
+.edit-clear-btn {
+  background: none;
+  border: 1px solid rgba(238, 231, 214, 0.4);
+  color: var(--ink);
+  padding: 0.25em 0.9em;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: inherit;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.edit-copy-btn:hover,
+.edit-clear-btn:hover {
+  background: rgba(238, 231, 214, 0.12);
+  border-color: rgba(238, 231, 214, 0.7);
 }
 
 /* ---------- magic: same menu mechanic as items, mirrored to the right ---------- */

@@ -44,7 +44,11 @@ function placeholder(id, name, category) {
     thumbnail: "",
     // A single default stat so every card previews populated — swap in
     // real ones (Materials, Edition, whatever fits) per piece as you go.
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
     // Filler flavor-text line (mirrors the small italic blurb under a
     // Skyrim item's stats, e.g. "Increases Disease Resistance by 100%.")
     // — swap in the real line per item whenever you're ready.
@@ -58,13 +62,21 @@ export const items = [
     ...placeholder("item-02", "Shitumss Tee", "Tops"),
     model: "/models/shitumss-tee.glb",
     viewerStartAngle: { thetaDeg: 177.2, phiDeg: 88.9 },
-    stats: [{ label: "Year", value: "2023" }],
+    stats: [
+      { label: "Year", value: "2023" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-04", "Stargirl x Sweetly Mesh Tee", "Tops"),
     model: "/models/illustrated-mesh-tee-2.glb",
     viewerStartAngle: { thetaDeg: 189.7, phiDeg: 86.7 },
-    stats: [{ label: "Year", value: "2024" }],
+    stats: [
+      { label: "Year", value: "2024" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-05", "CXR World Championship Tee", "Tops"),
@@ -73,6 +85,7 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "UNRELEASED" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -80,68 +93,113 @@ export const items = [
     model: "/models/kid-cudi-tee.glb",
     stats: [
       { label: "Year", value: "2024" },
-      { label: "value", value: "LIMITED" },
+      { label: "Value", value: "LIMITED" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
     ...placeholder("item-44", "Band Director Tee", "Tops"),
     model: "/models/band-director-tee.glb",
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-45", "X-Files Tee", "Tops"),
     model: "/models/xfiles-tee.glb",
     viewerStartAngle: { thetaDeg: 190.6, phiDeg: 85.8 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-46", "Joony Tee", "Tops"),
     model: "/models/joony-tee.glb",
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-47", "Fear Of Making Out Tee", "Tops"),
     model: "/models/fearofmakingout-tee.glb",
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-48", "Dess Dior Crop Tee", "Tops"),
     model: "/models/dess-dior-crop-tee.glb",
     viewerStartAngle: { thetaDeg: 179.0, phiDeg: 71.6 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-49", "Stargirl Mesh Tee", "Tops"),
     model: "/models/stargirl-mesh-tee.glb",
     viewerStartAngle: { thetaDeg: 190.7, phiDeg: 81.9 },
-    stats: [{ label: "Year", value: "2023" }],
+    stats: [
+      { label: "Year", value: "2023" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-51", "New Moon Raglan", "Tops"),
     model: "/models/new-moon-raglan.glb",
     viewerStartAngle: { thetaDeg: 270.6, phiDeg: 99.4 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
 
   // Bottoms
   {
     ...placeholder("item-06", "Sticker Print Jorts", "Bottoms"),
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-07", "Black Illustrated Shorts", "Bottoms"),
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-08", "Glo Sweatshort", "Bottoms"),
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-09", "Glo SS Black", "Bottoms"),
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
 
   // Accessories
@@ -150,6 +208,7 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "ARCHIVED" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -160,6 +219,7 @@ export const items = [
     stats: [
       { label: "Year", value: "2026" },
       { label: "Value", value: "PERSONAL" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -167,6 +227,7 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "PERSONAL" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -174,25 +235,38 @@ export const items = [
     stats: [
       { label: "Year", value: "2024" },
       { label: "Value", value: "PERSONAL" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
     ...placeholder("item-14", "Steak Ring", "Accessories"),
     model: "/models/steak-ring.glb",
     viewerStartAngle: { thetaDeg: 89.5, phiDeg: 148.7 },
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-52", "Spaghetti Ring", "Accessories"),
     model: "/models/spaghetti-ring.glb",
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-43", "Steakpods Case", "Accessories"),
     model: "/models/steakpods.glb",
     viewerFitMargin: 0.8,
     viewerStartAngle: { thetaDeg: 180, phiDeg: 90 },
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
 
   // Footwear
@@ -203,7 +277,11 @@ export const items = [
     // than the safe-for-anything default without clipping on rotation.
     viewerFitMargin: 0.5,
     viewerStartAngle: { thetaDeg: 267.5, phiDeg: 84.4 },
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-16", "Black Claymation Shoe", "Footwear"),
@@ -214,7 +292,8 @@ export const items = [
     viewerStartAngle: { thetaDeg: 267.5, phiDeg: 84.4 },
     stats: [
       { label: "Year", value: "2026" },
-      { label: "Price", value: "120" },
+      { label: "Value", value: "120" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -224,7 +303,8 @@ export const items = [
     viewerStartAngle: { thetaDeg: 210.0, phiDeg: 72.6 },
     stats: [
       { label: "Year", value: "2025" },
-      { label: "VALUE", value: "110" },
+      { label: "Value", value: "110" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -235,6 +315,7 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "110" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -244,7 +325,8 @@ export const items = [
     viewerStartAngle: { thetaDeg: 250.8, phiDeg: 79.4 },
     stats: [
       { label: "Year", value: "2026" },
-      { label: "VALUE", value: "200" },
+      { label: "Value", value: "200" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -254,7 +336,8 @@ export const items = [
     viewerStartAngle: { thetaDeg: 8.0, phiDeg: 79.5 },
     stats: [
       { label: "Year", value: "2026" },
-      { label: "VALUE", value: "125" },
+      { label: "Value", value: "125" },
+      { label: "Weight", value: "—" },
     ],
   },
   {
@@ -262,7 +345,11 @@ export const items = [
     model: "/models/clay-slide.glb",
     viewerFitMargin: 0.7,
     viewerStartAngle: { thetaDeg: 261.3, phiDeg: 75.7 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
 
   // Packaging
@@ -276,11 +363,19 @@ export const items = [
     // true last keyframe is frame 179 (7.458333s @ 24fps) — stopping short
     // of that cuts the loop off before it settles on its final pose.
     viewerAnimationRange: { startFrame: 75, endFrame: 179, fps: 24 },
-    stats: [{ label: "Year", value: "2024" }],
+    stats: [
+      { label: "Year", value: "2024" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-21", "Kid Cudi x Bravest Foot Clog Box", "Packaging"),
-    stats: [{ label: "Year", value: "2024" }],
+    stats: [
+      { label: "Year", value: "2024" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-22", "Claymation Shoe Box", "Packaging"),
@@ -298,17 +393,29 @@ export const items = [
     ...placeholder("item-25", "Bag Clog Box", "Packaging"),
     model: "/models/bag-clog-box.glb",
     viewerStartAngle: { thetaDeg: 47.2, phiDeg: 52.1 },
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
 
   // Action Figures
   {
     ...placeholder("item-26", "Kid Cudi", "Action Figures"),
-    stats: [{ label: "Year", value: "2024" }],
+    stats: [
+      { label: "Year", value: "2024" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-27", "Joony", "Action Figures"),
-    stats: [{ label: "Year", value: "2023" }],
+    stats: [
+      { label: "Year", value: "2023" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   placeholder("item-28", "Eris", "Action Figures"),
   placeholder("item-29", "Me", "Action Figures"),
@@ -318,22 +425,38 @@ export const items = [
   // Nail Sets
   {
     ...placeholder("item-32", "Raw Beef Set", "Nail Sets"),
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-33", "Raw Pork Set", "Nail Sets"),
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-34", "Halloween Animal Crossing Set", "Nail Sets"),
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-35", "Splatoon Sticker Collage Set", "Nail Sets"),
     model: "/models/splatoon-collage-nails.glb",
     viewerFitMargin: 0.75,
     viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
-    stats: [{ label: "Year", value: "2024" }],
+    stats: [
+      { label: "Year", value: "2024" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   placeholder("item-36", "Deco Berserk Set", "Nail Sets"),
   {
@@ -341,14 +464,22 @@ export const items = [
     model: "/models/katamari-nails.glb",
     viewerFitMargin: 0.75,
     viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-39", "Deco Tentacle Set", "Nail Sets"),
     model: "/models/tentacle-nails.glb",
     viewerFitMargin: 0.75,
     viewerStartAngle: { thetaDeg: 234.4, phiDeg: 49.3 },
-    stats: [{ label: "Year", value: "2026" }],
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
 
   // Misc
@@ -356,12 +487,20 @@ export const items = [
     ...placeholder("item-40", "Memento Deluxe Cassette", "Misc"),
     model: "/models/memento-deluxe.glb",
     viewerFitMargin: 0.65,
-    stats: [{ label: "Year", value: "2024" }],
+    stats: [
+      { label: "Year", value: "2024" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
   {
     ...placeholder("item-41", "Zombie Zip Bag", "Misc"),
     model: "/models/zombie.glb",
     viewerStartAngle: { thetaDeg: 230, phiDeg: 90 },
-    stats: [{ label: "Year", value: "2025" }],
+    stats: [
+      { label: "Year", value: "2025" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
 ];

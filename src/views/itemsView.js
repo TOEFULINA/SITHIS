@@ -3,6 +3,21 @@ import { renderTopNav } from "./topNav.js";
 import { mountModelViewer } from "../three/modelViewer.js";
 import { navigate } from "../router.js";
 import { fitTextToOneLine } from "../utils/fitTextToOneLine.js";
+import {
+  isEditModeOn,
+  setEditModeStored,
+  getFieldValue,
+  setFieldValue,
+  exportEditsText,
+  clearAllEdits,
+} from "../utils/localEdits.js";
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
 // Full-screen, fully keyboard-navigable menu, mirroring how the game's
 // own inventory works:
@@ -60,6 +75,11 @@ export function renderItemsView(container) {
         </div>
       </div>
     </div>
+    <div class="edit-mode-bar">
+      <span class="edit-mode-label">EDIT MODE — click a value or the description to type. Saved to this browser only.</span>
+      <button type="button" class="edit-copy-btn">Copy changes</button>
+      <button type="button" class="edit-clear-btn">Clear edits</button>
+    </div>
   `
   );
 
@@ -75,6 +95,8 @@ export function renderItemsView(container) {
   const infoName = el.querySelector(".info-name");
   const statList = el.querySelector(".stat-list");
   const description = el.querySelector(".item-description");
+  const editCopyBtn = el.querySelector(".edit-copy-btn");
+  const editClearBtn = el.querySelector(".edit-clear-btn");
 
   let categoryIndex = 0;
   let itemIndex = 0;
@@ -82,6 +104,136 @@ export function renderItemsView(container) {
   let currentList = itemsInCategory(categories[categoryIndex]);
   let disposeViewer = null;
   let lastRenderedItem = null;
+  let editMode = isEditModeOn();
+  el.classList.toggle("edit-mode-active", editMode);
+
+  const STAT_FIELDS = [
+    { field: "year", label: "Year" },
+    { field: "value", label: "Value" },
+    { field: "weight", label: "Weight" },
+  ];
+
+  // Renders the name/stats/description for whichever item is current,
+  // independent of mounting the 3D viewer — called both when the
+  // selected item changes and when edit mode is toggled on the same item.
+  function renderInfoCard(item) {
+    if (!item) {
+      infoName.textContent = "";
+      statList.innerHTML = "";
+      description.textContent = "";
+      description.removeAttribute("contenteditable");
+      return;
+    }
+
+    infoName.textContent = item.name;
+    fitTextToOneLine(infoName);
+
+    statList.innerHTML = STAT_FIELDS.map(({ field, label }) => {
+      const val = getFieldValue(item, field);
+      const valueHtml = editMode
+        ? `<span class="stat-value-edit" contenteditable="true" spellcheck="false" data-field="${field}">${escapeHtml(val)}</span>`
+        : `<span>${escapeHtml(val)}</span>`;
+      return `<li><span class="stat-label">${label}</span>${valueHtml}</li>`;
+    }).join("");
+
+    const descVal = getFieldValue(item, "description");
+    description.textContent = descVal;
+    if (editMode) {
+      description.setAttribute("contenteditable", "true");
+      description.spellcheck = false;
+      description.dataset.field = "description";
+    } else {
+      description.removeAttribute("contenteditable");
+      delete description.dataset.field;
+    }
+  }
+
+  function commitEdit(fieldEl) {
+    const field = fieldEl.dataset.field;
+    const item = currentList[itemIndex];
+    if (!field || !item) return;
+    setFieldValue(item.id, field, fieldEl.textContent.trim());
+  }
+
+  // Selects the field's whole current value on focus — without this,
+  // clicking into a field (e.g. one still showing the "—" placeholder)
+  // drops the cursor at the click point and typing inserts instead of
+  // replacing, which reads as broken. Click-to-edit should always start
+  // from a clean slate.
+  function selectAllText(fieldEl) {
+    const range = document.createRange();
+    range.selectNodeContents(fieldEl);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  // blur/focus don't bubble, but they do still fire capture-phase
+  // listeners on ancestors, so a single delegated pair here (rather than
+  // per-field listeners re-attached on every render) covers every stat
+  // value.
+  statList.addEventListener(
+    "focus",
+    (e) => {
+      if (e.target.matches && e.target.matches(".stat-value-edit")) selectAllText(e.target);
+    },
+    true
+  );
+  statList.addEventListener(
+    "blur",
+    (e) => {
+      if (e.target.matches && e.target.matches(".stat-value-edit")) commitEdit(e.target);
+    },
+    true
+  );
+  statList.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.target.matches && e.target.matches(".stat-value-edit")) {
+      e.preventDefault();
+      e.target.blur();
+    }
+  });
+  description.addEventListener("focus", () => {
+    if (description.hasAttribute("contenteditable")) selectAllText(description);
+  });
+  description.addEventListener("blur", () => {
+    if (description.hasAttribute("contenteditable")) commitEdit(description);
+  });
+  description.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && description.hasAttribute("contenteditable")) {
+      e.preventDefault();
+      description.blur();
+    }
+  });
+
+  function toggleEditMode() {
+    editMode = !editMode;
+    setEditModeStored(editMode);
+    el.classList.toggle("edit-mode-active", editMode);
+    renderInfoCard(currentList[itemIndex] || null);
+  }
+
+  editCopyBtn.addEventListener("click", async () => {
+    const text = exportEditsText(items);
+    const original = editCopyBtn.textContent;
+    if (!text) {
+      editCopyBtn.textContent = "No edits yet";
+    } else {
+      try {
+        await navigator.clipboard.writeText(text);
+        editCopyBtn.textContent = "Copied!";
+      } catch {
+        editCopyBtn.textContent = "Copy failed";
+      }
+    }
+    setTimeout(() => {
+      editCopyBtn.textContent = original;
+    }, 1400);
+  });
+
+  editClearBtn.addEventListener("click", () => {
+    clearAllEdits();
+    renderInfoCard(currentList[itemIndex] || null);
+  });
 
   function renderCategoryRows() {
     categoryRowsEl.innerHTML = "";
@@ -148,9 +300,7 @@ export function renderItemsView(container) {
     setExpanded(false);
 
     if (!item) {
-      infoName.textContent = "";
-      statList.innerHTML = "";
-      description.textContent = "";
+      renderInfoCard(null);
       return;
     }
 
@@ -163,12 +313,7 @@ export function renderItemsView(container) {
       item.viewerAnimationRange,
       setExpanded
     );
-    infoName.textContent = item.name;
-    fitTextToOneLine(infoName);
-    statList.innerHTML = item.stats
-      .map((s) => `<li><span class="stat-label">${s.label}</span><span>${s.value}</span></li>`)
-      .join("");
-    description.textContent = item.description;
+    renderInfoCard(item);
   }
 
   // The connector glyph never moves — it's fixed at the pane's vertical
@@ -301,6 +446,15 @@ export function renderItemsView(container) {
   attachPaneScroll(listCol, scrollList);
 
   function onKeyDown(e) {
+    // Let a focused editable field (a stat value or the description, in
+    // edit mode) handle its own typing/arrow-key cursor movement — don't
+    // let it also drive pane navigation underneath.
+    if (e.target && e.target.isContentEditable) return;
+    if (e.key === "e" || e.key === "E") {
+      e.preventDefault();
+      toggleEditMode();
+      return;
+    }
     if (!["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight"].includes(e.key)) return;
     e.preventDefault();
     // This view owns arrow keys fully while mounted — stop the global
