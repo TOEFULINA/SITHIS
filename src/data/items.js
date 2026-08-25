@@ -247,6 +247,7 @@ export const items = [
     ...placeholder("item-50", "Claymation Slide", "Footwear"),
     model: "/models/clay-slide.glb",
     viewerFitMargin: 0.7,
+    viewerStartAngle: { thetaDeg: 261.3, phiDeg: 75.7 },
     stats: [{ label: "Year", value: "2026" }],
   },
 
