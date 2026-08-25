@@ -57,12 +57,13 @@ export const items = [
   {
     ...placeholder("item-02", "Shitumss Tee", "Tops"),
     model: "/models/shitumss-tee.glb",
-    viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
+    viewerStartAngle: { thetaDeg: 177.2, phiDeg: 88.9 },
     stats: [{ label: "Year", value: "2023" }],
   },
   {
     ...placeholder("item-04", "Stargirl x Sweetly Mesh Tee", "Tops"),
     model: "/models/illustrated-mesh-tee-2.glb",
+    viewerStartAngle: { thetaDeg: 189.7, phiDeg: 86.7 },
     stats: [{ label: "Year", value: "2024" }],
   },
   {
@@ -91,7 +92,7 @@ export const items = [
   {
     ...placeholder("item-45", "X-Files Tee", "Tops"),
     model: "/models/xfiles-tee.glb",
-    viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
+    viewerStartAngle: { thetaDeg: 190.6, phiDeg: 85.8 },
     stats: [{ label: "Year", value: "2026" }],
   },
   {
@@ -121,7 +122,7 @@ export const items = [
   {
     ...placeholder("item-51", "New Moon Raglan", "Tops"),
     model: "/models/new-moon-raglan.glb",
-    viewerStartAngle: { thetaDeg: 215.0, phiDeg: 64.8 },
+    viewerStartAngle: { thetaDeg: 270.6, phiDeg: 99.4 },
     stats: [{ label: "Year", value: "2026" }],
   },
 
@@ -178,6 +179,7 @@ export const items = [
   {
     ...placeholder("item-14", "Steak Ring", "Accessories"),
     model: "/models/steak-ring.glb",
+    viewerStartAngle: { thetaDeg: 89.5, phiDeg: 148.7 },
     stats: [{ label: "Year", value: "2025" }],
   },
   {
