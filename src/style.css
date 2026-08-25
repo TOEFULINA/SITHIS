@@ -745,7 +745,15 @@ label[for],
    its own transform and so inherits this too). */
 @media (max-width: 860px) {
   #bg-layer {
+    /* The source photo is square, and background-size: cover on a tall
+       portrait screen already fits it height-for-height with zero vertical
+       slack — background-position's Y axis has nothing to shift, so the
+       framing has to come from where the zoom is anchored instead.
+       transform-origin above center pulls the eye-line up toward the top
+       third as it scales, for a close "looking at you" game-camera feel
+       rather than zooming into the torso. */
     transform: scale(1.8);
+    transform-origin: 50% 22%;
   }
 }
 
