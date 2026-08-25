@@ -287,14 +287,11 @@ label[for],
    edge-to-edge, the same background-image + 100% 100% pattern used
    elsewhere, but here deliberately stretched rather than aspect-ratio
    boxed since the source art is just a plain panel with no detail to
-   distort. The "Divider Ornate" knot pieces are pinned as the bar's own
-   ::before/::after at the far left/right screen edges — the diamond caps
-   from the reference screenshots — so no extra markup is needed for
-   them. Nav content is left-anchored (tabs), leaving the right side of
-   the bar empty/reserved for the stat readout that isn't designed yet.
-   The art's own hairline top border gets scaled down to nothing at this
-   bar height, so it's redrawn explicitly as a low-opacity border-top —
-   the same faint rule used on every other panel. */
+   distort. Nav content is left-anchored (tabs); the right side carries
+   the live clock readout (see .nav-clock below). The art's own hairline
+   top border gets scaled down to nothing at this bar height, so it's
+   redrawn explicitly as a low-opacity border-top — the same faint rule
+   used on every other panel. */
 .top-nav {
   position: fixed;
   bottom: 0;
@@ -305,32 +302,26 @@ label[for],
   align-items: center;
   justify-content: flex-start;
   height: clamp(44px, 6.5vw, 70px);
-  padding: 0 clamp(3rem, 6vw, 4.5rem);
+  padding: 0 clamp(1.5rem, 4vw, 3rem);
   gap: clamp(1.25rem, 3vw, 2.5rem);
   background-image: url("/ui/nav-bar-full.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   border-top: 1px solid var(--panel-border);
 }
-.top-nav::before,
-.top-nav::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 82%;
-  aspect-ratio: 236 / 198;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  pointer-events: none;
-}
-.top-nav::before {
-  left: 0;
-  background-image: url("/ui/nav-cap-left.png");
-}
-.top-nav::after {
-  right: 0;
-  background-image: url("/ui/nav-cap-right.png");
+
+/* Bottom-right game-clock readout, mirroring the in-game date/time
+   overlay from the reference screenshots (e.g. "Fredas, 12:20 PM, 30th
+   of Heartfire, 4E 201") — pushed to the far right of the bar via
+   margin-left: auto, using the same dim/uppercase treatment as the
+   other nav labels. */
+.nav-clock {
+  margin-left: auto;
+  color: var(--ink-dim);
+  font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  opacity: 0.85;
 }
 
 .top-nav button {
