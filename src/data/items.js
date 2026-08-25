@@ -118,6 +118,12 @@ export const items = [
     viewerStartAngle: { thetaDeg: 190.7, phiDeg: 81.9 },
     stats: [{ label: "Year", value: "2023" }],
   },
+  {
+    ...placeholder("item-51", "New Moon Raglan", "Tops"),
+    model: "/models/new-moon-raglan.glb",
+    viewerStartAngle: { thetaDeg: 215.0, phiDeg: 64.8 },
+    stats: [{ label: "Year", value: "2026" }],
+  },
 
   // Bottoms
   {
