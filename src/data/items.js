@@ -91,6 +91,12 @@ export const items = [
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [{ label: "Year", value: "2026" }],
   },
+  {
+    ...placeholder("item-45", "X-Files Tee", "Tops"),
+    model: "/models/xfiles-tee.glb",
+    viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
+    stats: [{ label: "Year", value: "2026" }],
+  },
 
   // Bottoms
   {
