@@ -201,6 +201,24 @@ export const items = [
       { label: "Weight", value: "—" },
     ],
   },
+  {
+    ...placeholder("item-53", "Glo Gang Baggy Sweats", "Bottoms"),
+    model: "/models/glo-gang-baggy-sweats.glb",
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
+  },
+  {
+    ...placeholder("item-54", "Black Glo Gang Baggy Sweats", "Bottoms"),
+    model: "/models/black-glo-gang-baggy-sweats.glb",
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
+  },
 
   // Accessories
   {
