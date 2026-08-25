@@ -1,6 +1,7 @@
 import { portfolioCategories } from "../data/portfolio.js";
 import { renderTopNav } from "./topNav.js";
 import { navigate } from "../router.js";
+import { fitTextToOneLine } from "../utils/fitTextToOneLine.js";
 
 // Same three-pane mechanic as itemsView.js (categories -> list -> detail),
 // mirrored to the right side of the screen since Magic is reached from the
@@ -152,6 +153,7 @@ export function renderMagicView(container) {
         </div>
       </div>
     `;
+    fitTextToOneLine(detailCol.querySelector(".info-name"));
   }
 
   function renderDetail() {

@@ -569,6 +569,11 @@ label[for],
   font-size: clamp(0.8rem, 1.9vw, 1.35rem);
   font-weight: 700;
   text-align: center;
+  /* Always one line — fitTextToOneLine() shrinks font-size (and, as a
+     last resort, letter-spacing) at render time so long names fit here
+     instead of wrapping. */
+  white-space: nowrap;
+  overflow: hidden;
 }
 .info-divider {
   height: 1px;

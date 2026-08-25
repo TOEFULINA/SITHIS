@@ -2,6 +2,7 @@ import { items } from "../data/items.js";
 import { renderTopNav } from "./topNav.js";
 import { mountModelViewer } from "../three/modelViewer.js";
 import { navigate } from "../router.js";
+import { fitTextToOneLine } from "../utils/fitTextToOneLine.js";
 
 // Full-screen, fully keyboard-navigable menu, mirroring how the game's
 // own inventory works:
@@ -163,6 +164,7 @@ export function renderItemsView(container) {
       setExpanded
     );
     infoName.textContent = item.name;
+    fitTextToOneLine(infoName);
     statList.innerHTML = item.stats
       .map((s) => `<li><span class="stat-label">${s.label}</span><span>${s.value}</span></li>`)
       .join("");
