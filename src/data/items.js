@@ -186,22 +186,6 @@ export const items = [
     ],
   },
   {
-    ...placeholder("item-08", "Glo Sweatshort", "Bottoms"),
-    stats: [
-      { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
-    ],
-  },
-  {
-    ...placeholder("item-09", "Glo SS Black", "Bottoms"),
-    stats: [
-      { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
-    ],
-  },
-  {
     ...placeholder("item-53", "Glo Gang Baggy Sweats", "Bottoms"),
     model: "/models/glo-gang-baggy-sweats.glb",
     stats: [
