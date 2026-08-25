@@ -88,7 +88,7 @@ export const items = [
   {
     ...placeholder("item-44", "Band Director Tee", "Tops"),
     model: "/models/band-director-tee.glb",
-    viewerStartAngle: { thetaDeg: 325, phiDeg: 70 },
+    viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [{ label: "Year", value: "2026" }],
   },
 
