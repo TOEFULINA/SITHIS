@@ -113,6 +113,12 @@ export const items = [
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [{ label: "Year", value: "2026" }],
   },
+  {
+    ...placeholder("item-48", "Dess Dior Crop Tee", "Tops"),
+    model: "/models/dess-dior-crop-tee.glb",
+    viewerStartAngle: { thetaDeg: 221.0, phiDeg: 64.8 },
+    stats: [{ label: "Year", value: "2026" }],
+  },
 
   // Bottoms
   {
