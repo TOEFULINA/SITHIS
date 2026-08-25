@@ -60,6 +60,8 @@ export const items = [
   },
   {
     ...placeholder("item-02", "Shitumss Tee", "Tops"),
+    model: "/models/shitumss-tee.glb",
+    viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [{ label: "Year", value: "2023" }],
   },
   {
@@ -72,6 +74,8 @@ export const items = [
   },
   {
     ...placeholder("item-05", "CXR World Championship Tee", "Tops"),
+    model: "/models/cxr-championship-tee.glb",
+    viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "UNRELEASED" },
@@ -100,6 +104,12 @@ export const items = [
   {
     ...placeholder("item-46", "Joony Tee", "Tops"),
     model: "/models/joony-tee.glb",
+    viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
+    stats: [{ label: "Year", value: "2026" }],
+  },
+  {
+    ...placeholder("item-47", "Fear Of Making Out Tee", "Tops"),
+    model: "/models/fearofmakingout-tee.glb",
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [{ label: "Year", value: "2026" }],
   },
