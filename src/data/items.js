@@ -61,10 +61,6 @@ export const items = [
     stats: [{ label: "Year", value: "2023" }],
   },
   {
-    ...placeholder("item-03", "Illustrated Mesh Tee", "Tops"),
-    stats: [{ label: "Year", value: "2023" }],
-  },
-  {
     ...placeholder("item-04", "Stargirl x Sweetly Mesh Tee", "Tops"),
     model: "/models/illustrated-mesh-tee-2.glb",
     stats: [{ label: "Year", value: "2024" }],
