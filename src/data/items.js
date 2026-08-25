@@ -64,9 +64,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 177.2, phiDeg: 88.9 },
     stats: [
       { label: "Year", value: "2023" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "ARCHIVE" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Promotional merch for Joony's 2023 project Shitumss.",
   },
   {
     ...placeholder("item-04", "Stargirl x Sweetly Mesh Tee", "Tops"),
@@ -74,9 +75,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 189.7, phiDeg: 86.7 },
     stats: [
       { label: "Year", value: "2024" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "ARCHIVE" },
+      { label: "Weight", value: "0.1" },
     ],
+    description: "Second iteration of mesh tees with Lonelystar to assist Lonelystar x Sweetly collab",
   },
   {
     ...placeholder("item-05", "CXR World Championship Tee", "Tops"),
@@ -85,8 +87,9 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "UNRELEASED" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Unreleased design by me for CXR",
   },
   {
     ...placeholder("item-37", "Oversized Kid Cudi Tee", "Tops"),
@@ -94,8 +97,9 @@ export const items = [
     stats: [
       { label: "Year", value: "2024" },
       { label: "Value", value: "LIMITED" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Shirt design and production file by me for Bravest Studios x Kid Cudi",
   },
   {
     ...placeholder("item-44", "Band Director Tee", "Tops"),
@@ -103,29 +107,32 @@ export const items = [
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [
       { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "68" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Designed for Bravest Studios. Inspired by Sgt. Pepper.",
   },
   {
     ...placeholder("item-45", "X-Files Tee", "Tops"),
     model: "/models/xfiles-tee.glb",
     viewerStartAngle: { thetaDeg: 190.6, phiDeg: 85.8 },
     stats: [
-      { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Year", value: "2022" },
+      { label: "Value", value: "ARCHIVE" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Merchandise for Chris Patrick's project X-Files.",
   },
   {
     ...placeholder("item-46", "Joony Tee", "Tops"),
     model: "/models/joony-tee.glb",
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [
-      { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Year", value: "2024" },
+      { label: "Value", value: "ARCHIVE" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Merchandise for Joony's 2024 project Memento.",
   },
   {
     ...placeholder("item-47", "Fear Of Making Out Tee", "Tops"),
@@ -133,9 +140,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [
       { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
+      { label: "Value", value: "Unreleased" },
       { label: "Weight", value: "—" },
     ],
+    description: "Digitally illustrated design for fearofmakingout.",
   },
   {
     ...placeholder("item-48", "Dess Dior Crop Tee", "Tops"),
@@ -143,9 +151,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 179.0, phiDeg: 71.6 },
     stats: [
       { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "ARCHIVE" },
+      { label: "Weight", value: "0.5" },
     ],
+    description: "Limited Release for Dess Dior's music video promotional.",
   },
   {
     ...placeholder("item-49", "Stargirl Mesh Tee", "Tops"),
@@ -153,9 +162,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 190.7, phiDeg: 81.9 },
     stats: [
       { label: "Year", value: "2023" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "ARCHIVE" },
+      { label: "Weight", value: "0.1" },
     ],
+    description: "Design work for Lonelystar! Limited release.",
   },
   {
     ...placeholder("item-51", "New Moon Raglan", "Tops"),
@@ -163,9 +173,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 270.6, phiDeg: 99.4 },
     stats: [
       { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "888" },
+      { label: "Weight", value: "0.8" },
     ],
+    description: "Inspired by my family's San Francisco Chinese restaurant from the 70s.",
   },
 
   // Bottoms
@@ -173,35 +184,39 @@ export const items = [
     ...placeholder("item-06", "Sticker Print Jorts", "Bottoms"),
     stats: [
       { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "98" },
+      { label: "Weight", value: "2" },
     ],
+    description: "Designed by me for Bravest Studios!",
   },
   {
     ...placeholder("item-07", "Black Illustrated Shorts", "Bottoms"),
     stats: [
       { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "PERSONAL" },
+      { label: "Weight", value: "1.5" },
     ],
+    description: "Baggy shorts illustrated with Posca Paint Marker.",
   },
   {
     ...placeholder("item-53", "Glo Gang Baggy Sweats", "Bottoms"),
     model: "/models/glo-gang-baggy-sweats.glb",
     stats: [
       { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "ARCHIVE" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Design work for Bravest x Glo Gang collab",
   },
   {
     ...placeholder("item-54", "Black Glo Gang Baggy Sweats", "Bottoms"),
     model: "/models/black-glo-gang-baggy-sweats.glb",
     stats: [
       { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "ARCHIVE" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Design work for Bravest x Glo Gang collab",
   },
 
   // Accessories
@@ -210,8 +225,9 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "ARCHIVED" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Inspired by Crocs. Archive design concept by me for Bravest Studios.",
   },
   {
     ...placeholder("item-11", "Button Covered Bag", "Accessories"),
@@ -221,24 +237,27 @@ export const items = [
     stats: [
       { label: "Year", value: "2026" },
       { label: "Value", value: "PERSONAL" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "4" },
     ],
+    description: "Custom pins printed and pressed on a hand me down Telfar! My daily work bag.",
   },
   {
     ...placeholder("item-12", "Engraved Headphones", "Accessories"),
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "PERSONAL" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "3" },
     ],
+    description: "Engraved using the xtool engraving pen - custom illustration",
   },
   {
     ...placeholder("item-13", "Deco Majora's Mask Case", "Accessories"),
     stats: [
       { label: "Year", value: "2024" },
       { label: "Value", value: "PERSONAL" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "0.5" },
     ],
+    description: "Decoden phone case with charms collected through my lifetime :)",
   },
   {
     ...placeholder("item-14", "Steak Ring", "Accessories"),
@@ -246,18 +265,20 @@ export const items = [
     viewerStartAngle: { thetaDeg: 89.5, phiDeg: 148.7 },
     stats: [
       { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "MARKET" },
+      { label: "Weight", value: "0.1" },
     ],
+    description: "Custom hand sculpted polymer clay ring - steak edition.",
   },
   {
     ...placeholder("item-52", "Spaghetti Ring", "Accessories"),
     model: "/models/spaghetti-ring.glb",
     stats: [
       { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "GIFT" },
+      { label: "Weight", value: "0.1" },
     ],
+    description: "Custom hand sculpted polymer clay ring - spaghetti edition",
   },
   {
     ...placeholder("item-43", "Steakpods Case", "Accessories"),
@@ -266,9 +287,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 180, phiDeg: 90 },
     stats: [
       { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "PERSONAL" },
+      { label: "Weight", value: "0.5" },
     ],
+    description: "Steak sculped in Nomad sculpt, printed with Elegoo and hand painted.",
   },
 
   // Footwear
@@ -281,9 +303,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 267.5, phiDeg: 84.4 },
     stats: [
       { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "120" },
+      { label: "Weight", value: "2" },
     ],
+    description: "Hand sculpted, scanned, and cast in EVA for your comfort by me 4 Bravest & u!",
   },
   {
     ...placeholder("item-16", "Black Claymation Shoe", "Footwear"),
@@ -295,8 +318,9 @@ export const items = [
     stats: [
       { label: "Year", value: "2026" },
       { label: "Value", value: "120" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "2" },
     ],
+    description: "Hand sculpted, scanned, and cast in EVA for your comfort by me 4 Bravest & u!",
   },
   {
     ...placeholder("item-17", "Glo Gang Slides", "Footwear"),
@@ -306,8 +330,9 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "110" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Pattern design for Bravest Studios x Glo Gang Collab",
   },
   {
     ...placeholder("item-18", "Steak Slides", "Footwear"),
@@ -317,8 +342,9 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "110" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Blank slides hand painted to look like raw steak! Yummyyyyy",
   },
   {
     ...placeholder("item-19", "Sticker Print Boots", "Footwear"),
@@ -326,9 +352,9 @@ export const items = [
     viewerFitMargin: 0.7,
     viewerStartAngle: { thetaDeg: 250.8, phiDeg: 79.4 },
     stats: [
-      { label: "Year", value: "2026" },
+      { label: "Year", value: "2018" },
       { label: "Value", value: "200" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "3" },
     ],
   },
   {
@@ -339,8 +365,9 @@ export const items = [
     stats: [
       { label: "Year", value: "2026" },
       { label: "Value", value: "125" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "2" },
     ],
+    description: "Colorway design for Bravest Studios Kross Kountry Runner.",
   },
   {
     ...placeholder("item-50", "Claymation Slide", "Footwear"),
@@ -349,9 +376,10 @@ export const items = [
     viewerStartAngle: { thetaDeg: 261.3, phiDeg: 75.7 },
     stats: [
       { label: "Year", value: "2026" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "130" },
+      { label: "Weight", value: "2" },
     ],
+    description: "Second iteration in the Claymation Shoe series :)",
   },
 
   // Packaging
@@ -368,29 +396,51 @@ export const items = [
     stats: [
       { label: "Year", value: "2024" },
       { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Packaging design for Bravest Studios Foot Clog.",
   },
   {
     ...placeholder("item-21", "Kid Cudi x Bravest Foot Clog Box", "Packaging"),
     stats: [
       { label: "Year", value: "2024" },
       { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "1" },
     ],
+    description: "Packaging design for Kid Cudi x Bravest Studios Foot  Clog.",
   },
   {
     ...placeholder("item-22", "Claymation Shoe Box", "Packaging"),
     model: "/models/clay-shoe.glb",
     viewerStartAngle: { thetaDeg: 301.8, phiDeg: 63.9 },
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "!" },
+      { label: "Weight", value: "2" },
+    ],
+    description: "Packaging design by me for the Clay shoe! Inspired by Play-doh sets from my childhood.",
   },
   {
     ...placeholder("item-23", "Spike Sandal Box", "Packaging"),
     model: "/models/spike-sandal-box.glb",
     viewerFitMargin: 0.85,
     viewerStartAngle: { thetaDeg: 219.8, phiDeg: 71.2 },
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "1" },
+    ],
+    description: "Packaging design for Bravest Studios Spike Sandal.",
   },
-  placeholder("item-24", "Spike Shoe Box", "Packaging"),
+  {
+    ...placeholder("item-24", "Spike Shoe Box", "Packaging"),
+    stats: [
+      { label: "Year", value: "2026" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "1" },
+    ],
+    description: "Packaging design for Bravest Studios Spike Shoe.",
+  },
   {
     ...placeholder("item-25", "Bag Clog Box", "Packaging"),
     model: "/models/bag-clog-box.glb",
@@ -398,8 +448,9 @@ export const items = [
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Weight", value: "0.5" },
     ],
+    description: "Packaging design for Bravest Studios Bag Clog. Ribbons are printed onto the box.",
   },
 
   // Action Figures
@@ -460,7 +511,10 @@ export const items = [
       { label: "Weight", value: "—" },
     ],
   },
-  placeholder("item-36", "Deco Berserk Set", "Nail Sets"),
+  {
+    ...placeholder("item-36", "Deco Berserk Set", "Nail Sets"),
+    description: "Custom",
+  },
   {
     ...placeholder("item-38", "Deco Katamari Set", "Nail Sets"),
     model: "/models/katamari-nails.glb",
@@ -491,9 +545,10 @@ export const items = [
     viewerFitMargin: 0.65,
     stats: [
       { label: "Year", value: "2024" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "PRICELESS" },
+      { label: "Weight", value: "0.5" },
     ],
+    description: "Cassette Tape from Joony's Memento Deluxe - Brought 2 life!",
   },
   {
     ...placeholder("item-41", "Zombie Zip Bag", "Misc"),
@@ -501,8 +556,9 @@ export const items = [
     viewerStartAngle: { thetaDeg: 230, phiDeg: 90 },
     stats: [
       { label: "Year", value: "2025" },
-      { label: "Value", value: "—" },
-      { label: "Weight", value: "—" },
+      { label: "Value", value: "PRICELESS" },
+      { label: "Weight", value: "0.5" },
     ],
+    description: "Zip bag from Estelle Allen's Zombie - Brought 2 life!",
   },
 ];
