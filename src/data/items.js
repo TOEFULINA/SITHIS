@@ -97,6 +97,12 @@ export const items = [
     viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
     stats: [{ label: "Year", value: "2026" }],
   },
+  {
+    ...placeholder("item-46", "Joony Tee", "Tops"),
+    model: "/models/joony-tee.glb",
+    viewerStartAngle: { thetaDeg: 279.4, phiDeg: 90.2 },
+    stats: [{ label: "Year", value: "2026" }],
+  },
 
   // Bottoms
   {
