@@ -237,7 +237,7 @@ export const items = [
     ...placeholder("item-42", "Brazil Runner", "Footwear"),
     model: "/models/brazil-runner.glb",
     viewerFitMargin: 0.7,
-    viewerStartAngle: { thetaDeg: 210, phiDeg: 72 },
+    viewerStartAngle: { thetaDeg: 8.0, phiDeg: 79.5 },
     stats: [
       { label: "Year", value: "2026" },
       { label: "VALUE", value: "125" },
