@@ -1,5 +1,5 @@
 import "./style.css";
-import { BACKGROUND_IMAGE, COMPASS_DIRECTIONS } from "./config.js";
+import { BACKGROUND_IMAGE, COMPASS_DIRECTIONS, MAP_EXTERNAL_URL } from "./config.js";
 import { initRouter, onRouteChange, navigate, getInitialRoute, getCurrentRoute } from "./router.js";
 import { renderCompassHome } from "./views/compassHome.js";
 import { renderItemsView } from "./views/itemsView.js";
@@ -61,7 +61,15 @@ document.addEventListener("keydown", (e) => {
 
   const current = getCurrentRoute();
   if (current === "home") {
-    navigate(COMPASS_DIRECTIONS[dir].key);
+    const targetKey = COMPASS_DIRECTIONS[dir].key;
+    // Map isn't an internal section — it sends visitors out to the real
+    // shop site instead of routing to mapView (see compassHome.js's click
+    // handler for the same behavior on click).
+    if (targetKey === COMPASS_DIRECTIONS.bottom.key) {
+      window.open(MAP_EXTERNAL_URL, "_blank", "noopener,noreferrer");
+      return;
+    }
+    navigate(targetKey);
     return;
   }
 

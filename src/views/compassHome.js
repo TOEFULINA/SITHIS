@@ -1,4 +1,4 @@
-import { COMPASS_DIRECTIONS } from "../config.js";
+import { COMPASS_DIRECTIONS, MAP_EXTERNAL_URL } from "../config.js";
 import { navigate } from "../router.js";
 
 // Full compass artwork (crosshair + woven center knot) as one image —
@@ -30,7 +30,15 @@ export function renderCompassHome(container) {
   `;
 
   el.querySelectorAll("[data-route]").forEach((btn) => {
-    btn.addEventListener("click", () => navigate(btn.dataset.route));
+    btn.addEventListener("click", () => {
+      // Map isn't an internal section — it sends visitors out to the real
+      // shop site instead of routing to mapView.
+      if (btn.dataset.route === COMPASS_DIRECTIONS.bottom.key) {
+        window.open(MAP_EXTERNAL_URL, "_blank", "noopener,noreferrer");
+        return;
+      }
+      navigate(btn.dataset.route);
+    });
   });
 
   container.appendChild(el);
