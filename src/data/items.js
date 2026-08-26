@@ -192,6 +192,7 @@ export const items = [
   {
     ...placeholder("item-07", "Black Illustrated Shorts", "Bottoms"),
     model: "/models/illustrated-denim-shorts.glb",
+    viewerStartAngle: { thetaDeg: 249.0, phiDeg: 93.1 },
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "PERSONAL" },
@@ -222,14 +223,17 @@ export const items = [
   {
     ...placeholder("item-55", "Aquarium Jeans", "Bottoms"),
     model: "/models/aquarium-jeans.glb",
+    viewerStartAngle: { thetaDeg: 249.0, phiDeg: 93.1 },
   },
   {
     ...placeholder("item-56", "Studded Denim Jorts", "Bottoms"),
     model: "/models/studded-denim-jorts.glb",
+    viewerStartAngle: { thetaDeg: 249.0, phiDeg: 93.1 },
   },
   {
     ...placeholder("item-57", "DNI Jeans", "Bottoms"),
     model: "/models/dni-jeans.glb",
+    viewerStartAngle: { thetaDeg: 249.0, phiDeg: 93.1 },
     stats: [
       { label: "Year", value: "2023" },
       { label: "Value", value: "—" },
