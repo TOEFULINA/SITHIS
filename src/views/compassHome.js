@@ -1,5 +1,6 @@
 import { COMPASS_DIRECTIONS, MAP_EXTERNAL_URL } from "../config.js";
 import { navigate } from "../router.js";
+import { cameFromToefulina, goBackToReferrer } from "../utils/referrer.js";
 
 // Full compass artwork (crosshair + woven center knot) as one image —
 // public/compass-rose.png. Swap that file for a different piece of art
@@ -27,6 +28,7 @@ export function renderCompassHome(container) {
       </button>
     </div>
     <div class="hint">Use Arrow Keys or Click a Direction</div>
+    ${cameFromToefulina() ? `<button class="back-link">Back</button>` : ""}
   `;
 
   el.querySelectorAll("[data-route]").forEach((btn) => {
@@ -40,6 +42,12 @@ export function renderCompassHome(container) {
       navigate(btn.dataset.route);
     });
   });
+
+  // Only rendered at all when the visitor actually arrived via a link from
+  // toefulina.com (see cameFromToefulina above) — sends them back to that
+  // exact referring page rather than just anywhere on the domain.
+  const backBtn = el.querySelector(".back-link");
+  if (backBtn) backBtn.addEventListener("click", goBackToReferrer);
 
   container.appendChild(el);
 
