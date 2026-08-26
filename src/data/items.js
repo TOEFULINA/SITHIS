@@ -61,7 +61,7 @@ export const items = [
   {
     ...placeholder("item-02", "Shitumss Tee", "Tops"),
     model: "/models/shitumss-tee.glb",
-    viewerStartAngle: { thetaDeg: 177.2, phiDeg: 88.9 },
+    viewerStartAngle: { thetaDeg: 285.5, phiDeg: 83.0 },
     stats: [
       { label: "Year", value: "2023" },
       { label: "Value", value: "ARCHIVE" },
