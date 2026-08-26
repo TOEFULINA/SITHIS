@@ -262,7 +262,7 @@ export const items = [
   {
     ...placeholder("item-14", "Steak Ring", "Accessories"),
     model: "/models/steak-ring.glb",
-    viewerStartAngle: { thetaDeg: 89.5, phiDeg: 148.7 },
+    viewerFitMargin: 0.85,
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "MARKET" },
@@ -273,6 +273,7 @@ export const items = [
   {
     ...placeholder("item-52", "Spaghetti Ring", "Accessories"),
     model: "/models/spaghetti-ring.glb",
+    viewerFitMargin: 0.85,
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "GIFT" },
