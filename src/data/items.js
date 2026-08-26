@@ -191,6 +191,7 @@ export const items = [
   },
   {
     ...placeholder("item-07", "Black Illustrated Shorts", "Bottoms"),
+    model: "/models/illustrated-denim-shorts.glb",
     stats: [
       { label: "Year", value: "2025" },
       { label: "Value", value: "PERSONAL" },
@@ -217,6 +218,23 @@ export const items = [
       { label: "Weight", value: "1" },
     ],
     description: "Design work for Bravest x Glo Gang collab",
+  },
+  {
+    ...placeholder("item-55", "Aquarium Jeans", "Bottoms"),
+    model: "/models/aquarium-jeans.glb",
+  },
+  {
+    ...placeholder("item-56", "Studded Denim Jorts", "Bottoms"),
+    model: "/models/studded-denim-jorts.glb",
+  },
+  {
+    ...placeholder("item-57", "DNI Jeans", "Bottoms"),
+    model: "/models/dni-jeans.glb",
+    stats: [
+      { label: "Year", value: "2023" },
+      { label: "Value", value: "—" },
+      { label: "Weight", value: "—" },
+    ],
   },
 
   // Accessories
